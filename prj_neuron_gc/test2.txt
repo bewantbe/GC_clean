@@ -1,0 +1,17 @@
+Tstep = 0.03125
+Rate_input = 1.5
+Strength_Exinput = 0.008
+Strength_Ininput = 0.0
+Strength_CorEE = 0.02
+Strength_CorIE = 0.0
+Strength_CorII = 0.0
+Strength_CorEI = 0.0
+initial_pertub_Vot = -2005
+initial_pertub_Ex = -2010
+initial_pertub_Ex_H = -3298
+initial_pertub_In = -2046
+initial_pertub_In_H = -7246
+initial_seed = 200720071
+average_current = 0.00
+amplitude_current = 0.00
+last_time = 0.0

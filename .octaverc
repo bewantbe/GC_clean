@@ -1,0 +1,5 @@
+% octave initialization file. (Project-specific)
+
+addpath('GCcal');
+addpath('experimental_tools');
+addpath('prj_neuron_gc');
