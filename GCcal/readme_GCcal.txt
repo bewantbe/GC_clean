@@ -163,7 +163,7 @@ pos_nGrangerT2.m 以确保解的是正定问题, 并且顺便查看矩阵的条�
 % addpath GCcal                       
 
 % 计算长 10000 的序列, [Ding] 中"经典" 三元二阶模型的 Granger Causality
-nGrangerT(gdata(10000,2,3))
+nGrangerT(gdata(10000,2,3), 2)
 
 % 计算上面结果的理论值(序列长度趋于无穷)
 RGrangerT(para2cov(2,3))
@@ -192,20 +192,19 @@ addpath ../GCcal                               % 添加 GCcal 为工作目录
 mt = [0 0 0; 1 0 0; 0 1 0];                    % 1->2->3
 save('-ascii', 'cormat_tmp.txt', 'mt');        % 保存连接关系矩阵到文本文件 cormat_tmp.txt
 % 开始计算. 不显示图形, 显示即时运行信息, 3神经, 时间10000ms, 读取矩阵文件 cormat_tmp.txt
-system('raster_tuning -ng -v -n 3 -t 10000 -mat cormat_tmp.txt');
+system('./raster_tuning -ng -v -n 3 -t 10000 -mat cormat_tmp.txt');
 X = load('data/staffsave.txt')';               % 注意转置
 nGrangerT(X, 10)
 
+
 ===============================================================================
 % 计算某两群组间的频域GC
-
-addpath ..
+% (设工作目录为 prj_neuron_gc/ )
 X = gdata(1e5, 3, 5);                  % 计算一个五元三阶的 AR 序列, 长度 len=1e5
 wGc = singleGrangerF(X, [1 3], [2]);   % 计算从群组 [1 3] 到 2 的频域 GC
 sprintf('GC=%19.16f', mean(wGc))
 
 % 计算两两的频域条件GC
-addpath ..
 wGC = nGrangerF(X, 10);
 g1 = mean(wGC, 3)
 g2 = nGrangerT(X, 10)                  % 核对结果
