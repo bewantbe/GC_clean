@@ -2,7 +2,6 @@
 % save some simple analyse results to .mat
 % constant data length
 tic();
-addpath ..
 
 signature = 'data_scan_IF/w_net_3_06_sc2_t1e6_199_st';     % to distinguish different parallel program instances (also dir)
 

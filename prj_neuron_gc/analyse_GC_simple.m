@@ -1,5 +1,4 @@
 % simple I&F GC calculation
-addpath ..
 
 disp('----------------------------------------------------------');
 disp(' new run');
