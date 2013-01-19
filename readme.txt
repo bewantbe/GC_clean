@@ -1,5 +1,8 @@
 积分放电模型神经元的格兰杰因果关系分析程序
 
+工作目录可任意设置, 但使用前需执行 startup.m 以包含必要的文件.
+analyse_GC_simple.m 是示例文件.
+
 详情请查看
   GCcal/readme_GCcal.txt
   prj_neuron_gc/readme_neu.txt
