@@ -17,7 +17,7 @@ clear('stv','dt','extst');
 mode_IF = 'IF';
 mode_ST = 0;
 netstr = 'net_2_2';
-scee = 0.01;
+scee = 0.02;
 pr = 0.5;
 ps = 0.02;
 simu_time = 1e5;
