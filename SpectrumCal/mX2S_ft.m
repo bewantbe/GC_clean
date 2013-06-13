@@ -19,21 +19,21 @@ wnd = ones(len,1);
 %w0  = (2*pi*(0:len-1)/(len-1))';
 %wnd = sin(w0).^2;
 
-aveS = zeros(fftlen,p,p);
-S    = zeros(fftlen,p,p);
+aveS = zeros(p,p,fftlen);
+S    = zeros(p,p,fftlen);
 % average over trials
 for i_trial=1:n_trials
   % windowed Fourier transform
   Jk = zeros(fftlen, p);
   for channel=1:p
-    %Jk(:,channel) = fft(wnd .* (mX(:,channel,i_trial) - mean(mX(:,channel,i_trial))), fftlen);
+%    Jk(:,channel) = fft(wnd .* (mX(:,channel,i_trial) - mean(mX(:,channel,i_trial))), fftlen);
     Jk(:,channel) = fft(wnd .* mX(:,channel,i_trial), fftlen);
   end
   % get cross spectrum of one trial
   % due to symmetric of real data fft, this can be faster
   for chan1=1:p
     for chan2=1:p
-      S(:, chan1, chan2) = Jk(:,chan1).*conj(Jk(:,chan2));
+      S(chan1, chan2, :) = Jk(:,chan1).*conj(Jk(:,chan2));
     end
   end
   aveS = aveS + S;

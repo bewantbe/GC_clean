@@ -28,6 +28,7 @@ if ~exist('halfbandwidth', 'var')
 end
 if ~exist('n_taper', 'var')
   tapers = dpss(len, halfbandwidth);
+  n_taper = round(halfbandwidth*2);
 else
   tapers = dpss(len, halfbandwidth, n_taper);
 end
@@ -42,7 +43,7 @@ for i_trial=1:n_trials
     % windowed Fourier transform
     Jk = zeros(fftlen, p);
     for channel=1:p
-      %Jk(:,channel) = fft(tapers(:,i_taper) .* (mX(:,channel,i_trial) - mean(mX(:,channel,i_trial))), fftlen);
+%      Jk(:,channel) = fft(tapers(:,i_taper) .* (mX(:,channel,i_trial) - mean(mX(:,channel,i_trial))), fftlen);
       Jk(:,channel) = fft(tapers(:,i_taper) .* mX(:,channel,i_trial), fftlen);
     end
     % get cross spectrum of one tapered data
