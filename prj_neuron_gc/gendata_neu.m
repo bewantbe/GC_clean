@@ -64,14 +64,19 @@ output_name     = [file_prefix, 'volt_',file_inf_st,'.dat'];
 output_ISI_name = [file_prefix, 'ISI_', file_inf_st,'.txt'];
 output_RAS_name = [file_prefix, 'RAS_', file_inf_st,'.txt'];
 if (exist(output_RAS_name, 'file') == 0 || new_run)
+    if filesep == '\'
+      fs = '\\';          % in M$ windows
+    else
+      fs = '/';
+    end
 %    static_param = 'raster_tuning -ng -v --bin-save';     % if you are using M$ Windows
     if use_exp_IF
-        static_param = [ph, '/raster_tuning_expIF -ng -v --bin-save -inf ', ph,'/test2.txt'];
+        static_param = [ph, fs, 'raster_tuning_expIF -ng -v --bin-save -inf ', ph,'/test2.txt'];
     else
         if use_common_poisson
-            static_param = [ph, '/raster_tuning_co -ng -v --bin-save -inf ', ph,'/test2.txt'];
+            static_param = [ph, fs, 'raster_tuning_co -ng -v --bin-save -inf ', ph,'/test2.txt'];
         else
-            static_param = [ph, '/raster_tuning -ng -v --bin-save -inf ', ph,'/test2.txt'];
+            static_param = [ph, fs, 'raster_tuning -ng -v --bin-save -inf ', ph,'/test2.txt'];
         end
     end
     cmdst = sprintf('%s -n %d -t %.16e -mat %s -pr %.16e -ps %.16e -scee %.16e --save-interval %.16e -o "%s" --save-spike-interval %s --save-spike %s', ...
