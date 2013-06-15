@@ -1,7 +1,6 @@
 % Analyse the data in detail
 %e.g. (see analyse_GC_simple.m for more detailed example)
 %{
-    addpath ..
     len = 1e5;
     X = gdata(len, 2, 3);
     s_od = 1:99;

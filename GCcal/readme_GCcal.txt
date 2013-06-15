@@ -106,6 +106,9 @@ AnalyseSeries2.m   [aic_od, bic_od, zero_GC, oAIC, oBIC] = AnalyseSeries2(s_od, 
 
 GC_regression.m    (Matlab script)
         对 X 执行 AnalyseSeries 和 AnalyseSeries2 并求其自回归残差 srd, 联合回归残差 rd.
+        
+WhiteningFilter.m  [srd, sas] = WhiteningFilter(X, use_od)
+        返回 X 的自回归噪音项(srd), 也即"白化" X. sas是白化使用的系数. 自回归阶数统一为 use_od.
 
 nGrangerF.m         wGC = nGrangerF(X[, od[, fftlen]])
         由原始数据计算序列两两间的频域条件 GC, 支持多变量. od 是内部回归时用的阶数,

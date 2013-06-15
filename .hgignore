@@ -1,3 +1,5 @@
 syntax:glob
 *~
 octave-core
+pic_tmp
+GCIF_big_p
