@@ -45,12 +45,12 @@ else
     end
 end
 
-ph = fileparts(mfilename('fullpath'));
+pathdir = fileparts(mfilename('fullpath'));
 if isempty(netstr)
     matname = '-';
     neu_network = [1];
 else
-    matname = [ph, '/network/', netstr, '.txt'];
+    matname = [pathdir, '/network/', netstr, '.txt'];
     neu_network = load('-ascii', matname);
 end
 p = size(neu_network, 1);
@@ -71,12 +71,12 @@ if (exist(output_RAS_name, 'file') == 0 || new_run)
     end
 %    static_param = 'raster_tuning -ng -v --bin-save';     % if you are using M$ Windows
     if use_exp_IF
-        static_param = [ph, fs, 'raster_tuning_expIF -ng -v --bin-save -inf ', ph,'/test2.txt'];
+        static_param = [pathdir, fs, 'raster_tuning_expIF -ng -v --bin-save -inf ', pathdir,'/test2.txt'];
     else
         if use_common_poisson
-            static_param = [ph, fs, 'raster_tuning_co -ng -v --bin-save -inf ', ph,'/test2.txt'];
+            static_param = [pathdir, fs, 'raster_tuning_co -ng -v --bin-save -inf ', pathdir,'/test2.txt'];
         else
-            static_param = [ph, fs, 'raster_tuning -ng -v --bin-save -inf ', ph,'/test2.txt'];
+            static_param = [pathdir, fs, 'raster_tuning -ng -v --bin-save -inf ', pathdir,'/test2.txt'];
         end
     end
     cmdst = sprintf('%s -n %d -t %.16e -mat %s -pr %.16e -ps %.16e -scee %.16e --save-interval %.16e -o "%s" --save-spike-interval %s --save-spike %s', ...

@@ -36,6 +36,7 @@ S22(1,1,:) = S_mt(2,2,:);
 [Sn22,H22,de22] = sfactorization_wilson1(S22, fq);
 
 S3 = zeros(size(S_mt));
+
 for k = 1:fftlen
     iH = [inv(H11(1,1,k)),0;0, inv(H22(1,1,k))];
     S3(:,:,k) = iH*S_mt(:,:,k)*iH';
@@ -61,3 +62,19 @@ cfq, fftshift(imag(squeeze(S3(1,2,:))))
 legend('Re(S2)', 'Im(S2)', 'Re(S3)', 'Im(S3)');
 xlim([-0.5,0.5]);
 
+covxy_f_app0 = real(ifft(squeeze(S2(1,2,:))'));
+figure(8);
+covxy_f_app = fftshift(covxy_f_app0);
+%rg = (abs(cfq)<0.1) & (cfq ~= 0);
+rg = (abs(cfq)<0.1);
+plot(cfq(rg), covxy_f_app(rg), '-o');
+
+% approximate GC
+disp('GC x->y');
+sum(covxy_f_app0(1:20).^2)/(de22*de11)
+disp('GC y->x');
+sum(covxy_f_app0(end-20:end).^2)/(de22*de11)
+
+
+
+ SGrangerS(S3)
