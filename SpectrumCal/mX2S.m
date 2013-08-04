@@ -4,8 +4,10 @@
 % currently no window function applied
 % does not subtract mean value from original data
 
+% return fftlen*p*p matrix
+
 function aveS = mX2S(mX, mT, fftlen)
-mX = permute(mX,[2 1 3]);
+mX = permute(mX,[2 1 3]);          % convert to len * p * n_trials
 [len, p, n_trials] = size(mX);
 if exist('mT','var') && length(mT)==1   % mT is scaler, called as if mX2S(mX, fftlen)
   fftlen = mT;
@@ -17,12 +19,6 @@ end
 
 % window function
 wnd = ones(len,1);
-% Blackman window, am I correctly use it?
-%w0  = (2*pi*(0:len-1)/(len-1))';
-%wnd = 7938/18608 - 9240/18608*cos(w0) + 1430/18608*cos(2*w0);
-% Hanning window
-%w0  = (2*pi*(0:len-1)/(len-1))';
-%wnd = sin(w0).^2;
 
 %if exist('mT','var')
 %  % do NUFT
@@ -36,7 +32,7 @@ wnd = ones(len,1);
 
 if exist('mT','var')
   % do NUFT
-  desired_accuracy = 9;
+  desired_accuracy = 6;
   ft = @(channel,i_trial) ifftshift(FGG_1d_type1(fftshift(wnd .* mX(:,channel,i_trial)), fftshift(mT(:,i_trial)), fftlen, desired_accuracy));
 else
   ft = @(X) fft(wnd .* X, fftlen);

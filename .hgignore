@@ -1,5 +1,8 @@
 syntax:glob
 *~
+.*.swp
 octave-core
 pic_tmp
 GCIF_big_p
+data
+tags

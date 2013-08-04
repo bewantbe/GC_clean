@@ -1,0 +1,5 @@
+#!/bin/bash
+
+ctags -R ./
+ctags -a /home/xyy/matcode/libs
+ctags -a /home/xyy/matcode/libs/octave-3.6.2/NUFFT_code/*

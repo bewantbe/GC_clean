@@ -1,4 +1,5 @@
 function [cdcausal, Znew, Hnew] = SGrangerS(Sp)
+Sp = ipermute(Sp, [3,1,2]);   % convert to p*p*fftlen
 [p,s2,mlen]=size(Sp);
 f = 0:1/mlen:1-1/mlen;
 
