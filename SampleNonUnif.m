@@ -7,7 +7,7 @@ function [mX1, mX2, mT1, mT2]=SampleNonUnif(uX, mlen, slen, smode)
   %mlen = 512;                            % length of each trial
   n_trials = floor(size(uX,2)/mlen);      % number of trials
   uX = bsxfun(@minus, uX, mean(uX,2));
-  mX = reshape(uX(:,1:mlen*n_trials), size(uX,1), mlen, []);
+  %mX = reshape(uX(:,1:mlen*n_trials), size(uX,1), mlen, []);
 
   p = size(uX,1);
   %slen = 128;
@@ -31,9 +31,9 @@ function [mX1, mX2, mT1, mT2]=SampleNonUnif(uX, mlen, slen, smode)
   mX1 = zeros(p,slen,n_trials);
   mX2 = zeros(p,slen,n_trials);
   for tr=1:n_trials
-    mX1(:,:,tr) = mX(:,mT1(:,tr),tr);
-    mX2(:,:,tr) = mX(:,mT2(:,tr),tr);
-    %mX1(:,:,tr) = uX(:,mT1(:,tr)+mlen*(tr-1));
-    %mX2(:,:,tr) = uX(:,mT2(:,tr)+mlen*(tr-1));
+    %mX1(:,:,tr) = mX(:,mT1(:,tr),tr);
+    %mX2(:,:,tr) = mX(:,mT2(:,tr),tr);
+    mX1(:,:,tr) = uX(:,mT1(:,tr)+mlen*(tr-1));
+    mX2(:,:,tr) = uX(:,mT2(:,tr)+mlen*(tr-1));
   end
 end

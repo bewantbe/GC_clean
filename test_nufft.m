@@ -28,7 +28,8 @@ rand('state',2);
 tic;
 mlen = T_segment/stv0;
 [X1,X2,T1,T2] = SampleNonUnif(oX, mlen, slen, '1');
-fq = (0:slen-1)/T_segment;
+fq  = (0:slen-1)/T_segment;
+fqs = [0:slen/2-1, -slen/2:-1]/T_segment;
 fq_max = slen/T_segment;
 tocs('resample');
 
@@ -52,8 +53,9 @@ v = var(oX,[],2);
 % plot
 figure(1);
 %plot(fq, real(S_nu(:,1,1))-v(1), fq, abs(S_x2(:,1,1)), ufq, real(S_us(:,1,1)), '-o');
+%legend('nufft-bia','nufft-x2','unif');  xlim([0,fq_max]);
 plot(fq, real(S1(:,1,1)), fq, real(S_x2(:,1,1)), ufq, real(S_us(:,1,1)), '-o');
-legend('nufft-bia','nufft-x2','unif');  xlim([0,fq_max]);
+legend('nufft-S1','nufft-x2','unif');  xlim([0,fq_max]);
 
 %figure(2);
 %plot(fq, angle(S_x2(:,1,1)), '-o');  xlim([0,fq_max]);
@@ -118,4 +120,19 @@ getGCSapp(S1)
 %hold off
 
 %plot(S1(:,1,1));
+
+
+fq_cut = 0.5;
+[S3, fqs3] = FreqCut(S1,fqs,fq_cut);
+[S_us3, fqs3] = FreqCut(S_us,fqs,fq_cut);
+[S_nu3, fqs3] = FreqCut(S_nu,fqs,fq_cut);
+
+figure(7);
+plot(fftshift(fqs), fftshift(S1(:,1,1)));
+
+figure(8);
+plot(fftshift(fqs3), fftshift(S3(:,1,1)));
+xlim([-fq_cut,fq_cut]);
+
+%load('Ss.mat');
 
