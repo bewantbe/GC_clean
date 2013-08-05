@@ -1,0 +1,4 @@
+% project startup file
+
+run('../.octaverc');
+addpath('../');
