@@ -56,7 +56,7 @@ end
 p = size(neu_network, 1);
 file_inf_st = sprintf('%s_sc=%g_pr=%g_ps=%g_t=%.2e_stv=%g',...
                       netstr, scee, pr, ps, simu_time, stv);
-file_prefix = 'data/';
+file_prefix = [pwd(), '/data/'];   % force current dir
 if use_exp_IF
     file_prefix = [file_prefix, 'EIF_'];
 end
