@@ -15,7 +15,7 @@ end
 % window function
 wnd = ones(len,1);
 
-desired_accuracy = 9;
+desired_accuracy = 6;
 aveS = zeros(fftlen,p,p);
 S    = zeros(fftlen,p,p);
 Jk   = zeros(fftlen, p);

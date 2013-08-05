@@ -21,7 +21,7 @@ b_spike_train = isempty(strfind(upper(signature),upper('ST')))==1;  % using Spik
 
 % scan value sets
 s_net  = {'net_2_2'};
-s_time = [2e7];
+s_time = [1e5];
 s_scee = [0.02];
 s_prps = [0.012];
 s_ps   = [0.012];

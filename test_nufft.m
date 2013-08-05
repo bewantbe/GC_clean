@@ -2,7 +2,7 @@
 tocs = @(st) fprintf('%s: t = %6.3fs\n', st, toc());
 
 stv0 = 0.125;
-oX = gendata_neu('net_2_2', 0.02, 1, 0.012, 1e5, stv0);
+oX = gendata_neu('net_2_2', 0.02, 1, 0.012, 1e6, stv0);
 oX = bsxfun(@minus, oX, mean(oX,2));
 p = size(oX,1);
 
@@ -86,19 +86,19 @@ tic();
 getGCSapp(S_x2)
 tocs('GCapp x2');
 
-S_mt = mX2S_mt(mX);
-SGrangerS(S_us)
-SGrangerS(S_mt)
+%S_mt = mX2S_mt(mX);
+%SGrangerS(S_us)
+%SGrangerS(S_mt)
 
-SGrangerS(S1)
+%SGrangerS(S1)
 
-S2 = S1;
-S2(:,1,2) = S_us(:,1,2);
-S2(:,2,1) = S_us(:,2,1);
-getGCSapp(S2)
-SGrangerS(S2)
+%S2 = S1;
+%S2(:,1,2) = S_us(:,1,2);
+%S2(:,2,1) = S_us(:,2,1);
+%getGCSapp(S2)
+%SGrangerS(S2)
 
-getGCSapp(S1)
+%getGCSapp(S1)
 
 
 
@@ -122,17 +122,17 @@ getGCSapp(S1)
 %plot(S1(:,1,1));
 
 
-fq_cut = 0.5;
-[S3, fqs3] = FreqCut(S1,fqs,fq_cut);
-[S_us3, fqs3] = FreqCut(S_us,fqs,fq_cut);
-[S_nu3, fqs3] = FreqCut(S_nu,fqs,fq_cut);
+%fq_cut = 0.5;
+%[S3, fqs3] = FreqCut(S1,fqs,fq_cut);
+%[S_us3, fqs3] = FreqCut(S_us,fqs,fq_cut);
+%[S_nu3, fqs3] = FreqCut(S_nu,fqs,fq_cut);
 
-figure(7);
-plot(fftshift(fqs), fftshift(S1(:,1,1)));
+%figure(7);
+%plot(fftshift(fqs), fftshift(S1(:,1,1)));
 
-figure(8);
-plot(fftshift(fqs3), fftshift(S3(:,1,1)));
-xlim([-fq_cut,fq_cut]);
+%figure(8);
+%plot(fftshift(fqs3), fftshift(S3(:,1,1)));
+%xlim([-fq_cut,fq_cut]);
 
 %load('Ss.mat');
 
