@@ -4,7 +4,11 @@
 tic();
 
 % _ST _expIF
-signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7';  % to distinguish different parallel program instances (also dir)
+%signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7';  % to distinguish different parallel program instances (also dir)
+%signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w2';
+signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w3';
+signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w4';
+
 
 if isempty(strfind(upper(signature),upper('expIF')))
   %s_prps_default = logspace(log10(4.9e-3), log10(4.7e-2), 30);
@@ -72,8 +76,8 @@ for id_stv = 1:length(s_stv)
     gc(eye(p)==1) = [];
     s_gc_p(:,id_stv) = reshape(gc,[],1);
 
-    figure(id_stv+4);
-    plot(fftshift(fqs), fftshift(S1(:,1,1)));
+    %figure(id_stv+4);
+    %plot(fftshift(fqs), fftshift(S1(:,1,1)));
 end  % stv
     %prps_ps_aveISI(:, id_prps, id_ps) = aveISI;
     %prps_ps_ISI_dis(:,:,id_prps, id_ps) = ISI_dis;
