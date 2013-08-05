@@ -5,7 +5,7 @@ t0=tic();
 tocs = @(st) fprintf('%s: t = %6.3fs\n', st, toc());
 
 % _ST _expIF
-signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7';  % to distinguish different parallel program instances (also dir)
+signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w2';  % to distinguish different parallel program instances (also dir)
 
 if isempty(strfind(upper(signature),upper('expIF')))
   %s_prps_default = logspace(log10(4.9e-3), log10(4.7e-2), 30);
@@ -25,11 +25,11 @@ s_time = [2e7];
 s_scee = [0.02];
 s_prps = [0.012];
 s_ps   = [0.012];
-s_stv  = [4.5:0.5:5];
+s_stv  = [0.5:0.5:20];
 maxod  = 99;
 s_od   = 1:maxod;
 hist_div = 0:0.5:400;         % ISI
-T_segment = 64;               % in ms
+T_segment = 1000;             % in ms
 stv0   = 0.125;               % fine sample rate
 
 save('-v7', [signature, '_info.mat'], 's_net', 's_time', 's_scee', 's_prps', 's_ps', 's_stv', 's_od', 'hist_div', 'maxod', 'T_segment','stv0');
