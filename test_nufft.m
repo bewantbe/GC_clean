@@ -2,7 +2,7 @@
 tocs = @(st) fprintf('%s: t = %6.3fs\n', st, toc());
 
 stv0 = 0.125;
-oX = gendata_neu('net_2_2', 0.02, 1, 0.012, 1e6, stv0);
+oX = gendata_neu('net_2_2', 0.02, 1, 0.012, 1e5, stv0);
 oX = bsxfun(@minus, oX, mean(oX,2));
 p = size(oX,1);
 
@@ -75,7 +75,7 @@ legend('nufft-bia','nufft-x2','unif');  xlim([0,fq_max]);
 %plot(fq, abs(S_x2_bk(:,1,1))-abs(S_x2(:,1,1)), '-o');
 
 
-nGrangerT(uX,20)
+nGrangerT(uX,30)
 tic();
 getGCSapp(S_us)
 tocs('GCapp us');
