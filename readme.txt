@@ -1,7 +1,11 @@
 积分放电模型神经元的格兰杰因果关系分析程序
 
-工作目录可任意设置, 但使用前需执行 startup.m 以包含必要的文件.
 analyse_GC_simple.m 是示例文件.
+
+工作目录可任意设置, 但使用前需执行 startup.m 以包含必要的文件.
+  例如在当前工作目录建立包含如下内容的文件/your/working/directory/startup.m:
+    run('path/to/GC_clean/startup.m');
+    addpath('path/to/GC_clean');
 
 详情请查看
   GCcal/readme_GCcal.txt
@@ -13,3 +17,6 @@ analyse_GC_simple.m 是示例文件.
 
 代码同时放到了
 http://code.google.com/p/granger-causality-neuron/
+
+更新记录参见
+http://code.google.com/p/granger-causality-neuron/source/list
