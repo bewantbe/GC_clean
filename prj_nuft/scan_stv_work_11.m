@@ -5,7 +5,7 @@ t0=tic();
 tocs = @(st) fprintf('%s: t = %6.3fs\n', st, toc());
 
 % _ST _expIF
-signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w2';  % to distinguish different parallel program instances (also dir)
+signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w11';  % to distinguish different parallel program instances (also dir)
 
 if isempty(strfind(upper(signature),upper('expIF')))
   %s_prps_default = logspace(log10(4.9e-3), log10(4.7e-2), 30);
