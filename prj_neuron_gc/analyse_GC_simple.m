@@ -16,12 +16,21 @@ clear('stv','dt','extst');
 
 mode_IF = 'IF';
 mode_ST = 0;
-netstr = 'net_2_2';
+netstr = 'net_100_02';
 scee = 0.01;
-pr = 0.5;
+pr = 0.24;
 ps = 0.02;
-simu_time = 1e5;
-extst = '--RC-filter';
+simu_time = 1e7;
+extst = '--RC-filter -seed 1367598139';
+
+%mode_IF = 'IF';
+%mode_ST = 0;
+%netstr = 'net_2_2';
+%scee = 0.01;
+%pr = 0.5;
+%ps = 0.02;
+%simu_time = 1e5;
+%extst = '--RC-filter';
 
 %mode_IF = 'IF';
 %mode_ST = 0;
