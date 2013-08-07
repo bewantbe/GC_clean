@@ -5,7 +5,7 @@ t0=tic();
 tocs = @(st) fprintf('%s: t = %6.3fs\n', st, toc());
 
 % _ST _expIF
-signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w3';  % to distinguish different parallel program instances (also dir)
+signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w2';  % to distinguish different parallel program instances (also dir)
 
 if isempty(strfind(upper(signature),upper('expIF')))
   %s_prps_default = logspace(log10(4.9e-3), log10(4.7e-2), 30);
@@ -85,7 +85,7 @@ for id_stv = 1:length(s_stv)
     fqs = ifftshift(((0:slen-1)-floor(slen/2))/slen);
 
     tic();
-    S_x2 = mX2S_nuft_x2(X1, X2, T1, T2);
+    S_x2 = mX2S_nuft(X1, T1);
     S1 = Makeup4SpectrumFact(S_x2);
     [gc, de11, de22] = getGCSapp(S1);
     tocs('time spend in GC app');
