@@ -5,7 +5,7 @@ t0=tic();
 tocs = @(st) fprintf('%s: t = %6.3fs\n', st, toc());
 
 % _ST _expIF
-signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w3';  % to distinguish different parallel program instances (also dir)
+signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w12';  % to distinguish different parallel program instances (also dir)
 
 if isempty(strfind(upper(signature),upper('expIF')))
   %s_prps_default = logspace(log10(4.9e-3), log10(4.7e-2), 30);
@@ -81,7 +81,7 @@ for id_stv = 1:length(s_stv)
     end
 
     slen = round(T_segment/stv);
-    [X1,X2,T1,T2] = SampleNonUnif(oX, mlen, slen, '1', simu_time/T_segment*stv/s_stv(1));
+    [X1,X2,T1,T2] = SampleNonUnif(oX, mlen, slen, '1');
     fqs = ifftshift(((0:slen-1)-floor(slen/2))/slen);
 
     tic();

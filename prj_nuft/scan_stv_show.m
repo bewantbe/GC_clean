@@ -6,8 +6,8 @@ tic();
 % _ST _expIF
 %signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7';  % to distinguish different parallel program instances (also dir)
 %signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w2';
-signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w3';
-signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w4';
+signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w3';  % xhp: 31960.818 sec
+%signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w4';  % 32099 sec
 
 
 if isempty(strfind(upper(signature),upper('expIF')))
@@ -84,7 +84,8 @@ end  % stv
 
     % save pics
     figure(1);
-    plot(s_stv, s_gc_p(:,:));
+    plot(s_stv, s_gc_p(:,:),'-o');
+    legend('1->2', '2->1');
     figure(2);
     plot(s_stv, s_Sde(:,:));
 end  % ps
