@@ -20,8 +20,8 @@ netstr = 'net_100_03';
 scee = 0.005;
 pr = 0.24;
 ps = 0.02;
-simu_time = 1e4;
-extst = '--RC-filter -seed 1367598139';
+simu_time = 1e7;
+extst = '--RC-filter -seed 1367598140';
 
 %mode_IF = 'IF';
 %mode_ST = 0;
@@ -145,16 +145,16 @@ format 'short'
 disp('var ratio (at bic_od): var(x)/var(\epsilon), var(y)/var(\eta)');   % for 2-var only
 disp([num2str(R(1,1)/oDe(1,1,bic_od)), ' ', num2str(R(2,2)/oDe(2,2,bic_od))]);
 
-%clear('X', 'ras');
-%if strcmpi(mode_IF,'IF')
-%    st_para0 = 'IF_';
-%else
-%    st_para0 = 'EIF_';
-%end
-%if mode_ST
-%    st_para0 = [st_para0, 'ST_'];
-%end
-%st_para = sprintf('%s%s_sc=%1.3f_pr=%1.2f_ps=%1.3f_stv=%1.2f_t=%1.2e',...
-%              st_para0, netstr, scee, pr, ps, stv, simu_time);
-%save('-v7', ['result_',st_para,'.mat']);
+clear('X', 'ras');
+if strcmpi(mode_IF,'IF')
+    st_para0 = 'IF_';
+else
+    st_para0 = 'EIF_';
+end
+if mode_ST
+    st_para0 = [st_para0, 'ST_'];
+end
+st_para = sprintf('%s%s_sc=%1.3f_pr=%1.2f_ps=%1.3f_stv=%1.2f_t=%1.2e',...
+              st_para0, netstr, scee, pr, ps, stv, simu_time);
+save('-v7', ['result_',st_para,'.mat']);
 

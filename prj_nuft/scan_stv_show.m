@@ -3,13 +3,12 @@
 % constant data length
 tic();
 
-% _ST _expIF
-%signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7';  % to distinguish different parallel program instances (also dir)
-%signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w2';
+% data
 %signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w3';  % xhp: 31960.818 sec
 %signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w4';  % 32099 sec
 %signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w12';
-signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w11';  % 32099 sec
+%signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w11';  % 32099 sec
+signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w21';  % 16644 sec
 
 if isempty(strfind(upper(signature),upper('expIF')))
   %s_prps_default = logspace(log10(4.9e-3), log10(4.7e-2), 30);
