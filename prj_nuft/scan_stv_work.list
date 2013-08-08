@@ -1,0 +1,41 @@
+%
+
+Time samples(time): random(r), uniform(u)
+
+non-uniform Fourier Transform
+	Method 1  : original method
+	Method 1.5: subtract system bias
+	Method 2  : two independent sample of same time sample
+
+data series(data): non-overlapped(no), overlapped(o)
+
+s_net  = {'net_2_2'};
+s_time = [1e7];
+s_scee = [0.02];
+s_prps = [0.012];
+s_ps   = [0.012];
+s_stv  = [0.5:0.5:20];
+
+dt  = 1/32;     % ms
+stv0= 0.125;    % ms
+
+mlen = T_segment/stv0;
+slen = round(T_segment/stv);
+fq_max = 1/stv;
+
+scaned list:
+
+time	method	data	
+u	2	o	scan_stv_work_4.m
+
+r	1	no	scan_stv_work_11.m
+r	1	o	scan_stv_work_21.m
+r	2	no	scan_stv_work_12.m
+r	2	o	scan_stv_work_3.m
+
+
+s_time = [1e8];
+s_stv  = [0.5];
+time	method	data	
+r	1	o	scan_stv_work_31.m
+

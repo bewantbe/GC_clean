@@ -7,7 +7,7 @@ function mS = Makeup4SpectrumFact(S)
   mS = zeros(p,p,len);
   mS(:,:,1) = 0.25*(S(:,:,1) + S(:,:,1).' + S(:,:,1)' + conj(S(:,:,1)));
   for k=2:(len/2+1)
-    mS(:,:,k) = 0.25*( S(:,:,k        ) + S(:,:,k        )'
+    mS(:,:,k) = 0.25*( S(:,:,k        ) + S(:,:,k        )'...
                     + (S(:,:,(len-k+2)) + S(:,:,(len-k+2))' ).' );
     mS(:,:,len-k+2) = mS(:,:,k).';
   end
