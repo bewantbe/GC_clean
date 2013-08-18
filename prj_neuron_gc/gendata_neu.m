@@ -48,7 +48,7 @@ else
         fp = fp(end);  % use last occurrence
         np = strfind(extpara(fp+3:end), ' ');
         np = [np, length(extpara(fp+3:end))+1];
-        np([diff(np),2]<=1) = [] % delete continus white spaces
+        np([diff(np),2]<=1) = [];                % delete continus white spaces
         pE = str2num(extpara(fp+3:fp+1+np(1)));
         if (length(np)>1)
             pI = str2num(extpara(fp+2+np(1):fp+1+np(2)));
