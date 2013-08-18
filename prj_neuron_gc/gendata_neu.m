@@ -47,11 +47,11 @@ else
     if (length(fp)>0)
         fp = fp(end);  % use last occurrence
         np = strfind(extpara(fp+3:end), ' ');
-        np = [np, length(extpara(fp+3:end))+1]
+        np = [np, length(extpara(fp+3:end))+1];
         np([diff(np),2]<=1) = [] % delete continus white spaces
         pE = str2num(extpara(fp+3:fp+1+np(1)));
         if (length(np)>1)
-            pI = str2num(extpara(fp+2+np(1):fp+1+np(2)))
+            pI = str2num(extpara(fp+2+np(1):fp+1+np(2)));
         else
             pI = 0;
         end
@@ -77,7 +77,7 @@ else
     % the order of scee is: E2E, E2I, I2E, I2I
     scee = [scee, zeros(1,4-length(scee))];   % extend to full form
     st_scee = strrep(mat2str(scee),' ',',');
-    st_p = strrep(mat2str([pE,pI]),' ',',')
+    st_p = strrep(mat2str([pE,pI]),' ',',');
     file_inf_st = sprintf('%s_p%s_sc=%s_pr=%g_ps=%g_t=%.2e_stv=%g',...
                       netstr, st_p, st_scee, pr, ps, simu_time, stv);
     if (pI+pE ~= p)
@@ -114,7 +114,7 @@ if (exist(output_RAS_name, 'file') == 0 || new_run)
         cmdst = sprintf('%s -n %d %d -t %.16e -mat %s -pr %.16e -ps %.16e -scee %.16e -scei %.16e -scie %.16e -scii %.16e --save-interval %.16e -o "%s" --save-spike-interval "%s" --save-spike "%s"', ...
                 static_param, pE, pI, simu_time, matname, pr, ps, scee(1), scee(2), scee(3), scee(4), stv, output_name, output_ISI_name, output_RAS_name);
     end
-disp([cmdst, ' ', extpara]);  fflush(stdout);   % for debug
+%disp([cmdst, ' ', extpara]);  fflush(stdout);   % for debug
     rt = system([cmdst, ' ', extpara]);
 else
     rt = 0;
