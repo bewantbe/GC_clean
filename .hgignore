@@ -5,3 +5,5 @@ pic_tmp
 data
 tags
 tmp_*.m
+prj_nuft/data_scan_stv
+prj_neuron_gc/analyse_GC_simple??.m

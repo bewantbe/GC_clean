@@ -2,6 +2,7 @@
 
 ph = fileparts(mfilename('fullpath'));
 
+addpath(ph);
 addpath([ph,'/GCcal']);
 addpath([ph,'/experimental_tools']);
 addpath([ph,'/prj_neuron_gc']);
