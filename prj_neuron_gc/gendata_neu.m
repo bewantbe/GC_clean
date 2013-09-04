@@ -24,6 +24,7 @@ if (exist('extpara','var')==0)
     new_run    = false;
     use_exp_IF = false;
     use_common_poisson = false;
+    pI = -1;
 else
     if (length(extpara)>=3) && (1==strcmpi(extpara(1:3),'new'))
         new_run = true;
