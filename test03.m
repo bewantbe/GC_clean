@@ -19,7 +19,9 @@ p = size(A,1);
 save('-ascii','-double', 'a_coef.txt', 'A');
 halfde = chol(noisecov)';
 save('-ascii','-double', 'd.txt', 'halfde');
+tic;
 system(['./GCcal/gendata -half-noise d.txt -l ',num2str(len),' -seed ',num2str(2^31*rand())]);
+toc;
 %output: out.txt raw file
 fid = fopen('out.txt', 'r');
 X = fread(fid, [p, Inf], 'double');
