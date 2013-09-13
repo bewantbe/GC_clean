@@ -9,7 +9,8 @@ tic();
 %signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w12';
 %signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w11';  % 32099 sec
 %signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w21';  % 16644 sec
-signature = 'data_scan_stv/net_2_2_IF_sc2_l1e8_w31';  % 1049 sec
+%signature = 'data_scan_stv/net_2_2_IF_sc2_l1e8_w31';  % 1049 sec
+signature = 'data_scan_stv/IF_w50_net_2_2_sc=0.02_t=1.000e+06';
 
 if isempty(strfind(upper(signature),upper('expIF')))
   %s_prps_default = logspace(log10(4.9e-3), log10(4.7e-2), 30);
@@ -38,15 +39,17 @@ hist_div = 0:0.5:400;         % ISI
 T_segment = 64;               % in ms
 stv0   = 0.125;                   % fine sample rate
 
+clear('signature0');
 %load 's_net', 's_time', 's_scee', 's_prps', 's_ps', 's_stv', 's_od', 'hist_div', 'maxod', 'T_segment','stv0'
 load([signature, '_info.mat']);
 
-data_path = ['data/', signature, '_'];
+if (exist('signature0', 'var'))
+  signature = signature0;
+end
 
 for net_id = 1:length(s_net)
  netstr = s_net{net_id};
- matname = ['network/', netstr, '.txt'];
- neu_network = load('-ascii', matname);
+ neu_network = getnetwork(netstr);
  p = size(neu_network, 1);
 for simu_time = s_time
 for scee = s_scee

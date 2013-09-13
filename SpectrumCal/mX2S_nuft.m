@@ -23,7 +23,8 @@ Jk   = zeros(fftlen, p);
 for i_trial=1:n_trials
   % windowed Fourier transform
   for channel=1:p
-    Jk(:,channel) = ifftshift(FGG_1d_type1(wnd .* mX(:,channel,i_trial), mT(:,i_trial), fftlen, desired_accuracy));
+    %Jk(:,channel) = ifftshift(FGG_1d_type1(wnd .* mX(:,channel,i_trial), mT(:,i_trial), fftlen, desired_accuracy));
+    Jk(:,channel) = nufftw(mX(:,channel,i_trial), mT(:,i_trial), fftlen/2);
   end
   % get cross spectrum of one trial
   % due to symmetric of real data fft, this can be faster

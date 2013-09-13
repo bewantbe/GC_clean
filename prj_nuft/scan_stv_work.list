@@ -1,13 +1,22 @@
 %
 
-Time samples(time): random(r), uniform(u)
+Note:
 
-non-uniform Fourier Transform
-	Method 1  : original method
-	Method 1.5: subtract system bias
-	Method 2  : two independent sample of same time sample
+time (of samples):
+	r: random sampling (uniform distributed)
+	u: uniform sampling (equal space sampling)
 
-data series(data): non-overlapped(no), overlapped(o)
+method (of Fourier Transform):
+	1  : traditional way, X' * X
+	1.5: subtract system bias
+	2  : two independent sample of same time sample, X1'*X2
+
+data:
+	no: non-overlapped
+	o:  overlapped
+
+
+Parameters:
 
 s_net  = {'net_2_2'};
 s_time = [1e7];
@@ -19,8 +28,8 @@ s_stv  = [0.5:0.5:20];
 dt  = 1/32;     % ms
 stv0= 0.125;    % ms
 
-mlen = T_segment/stv0;
-slen = round(T_segment/stv);
+mlen = T_segment/stv0;         % data points in each trials, full set
+slen = round(T_segment/stv);   % data points in each trials, down sample set
 fq_max = 1/stv;
 
 scaned list:
@@ -38,4 +47,14 @@ s_time = [1e8];
 s_stv  = [0.5];
 time	method	data	
 r	1	o	scan_stv_work_31.m
+
+
+s_time = [1e6];
+max_freq = 1.0 kHz;
+
+time	method	data	file			propose
+u	1	no	scan_stv_work_50.m	correctness test for mX2S_nuft
+r	1	no	scan_stv_work_51.m	correctness test for mX2S_nuft
+
+
 
