@@ -30,7 +30,7 @@ end
 %datamatname = sprintf('%s_%s_sc=%g_t=%.3e_info.mat', signature, netstr, scee, simu_time);
 %datamatname = [signature, '_info.mat'];
 datamatname = [datamatname, '_info.mat'];
-save('-v7', datamatname, 'signature0', 's_net', 's_time', 's_scee', 's_prps', 's_ps', 's_stv', 's_od', 'hist_div', 'maxod', 'T_segment','stv0');
+save('-v7', datamatname, 'signature0', 's_net', 's_time', 's_scee', 's_prps', 's_ps', 's_stv', 's_od', 'hist_div', 'maxod', 'T_segment','stv0','b_overlap_time_interval');
 
 data_path = ['data/', signature, '_'];
 
@@ -78,7 +78,11 @@ for id_stv = 1:length(s_stv)
     end
 
     slen = round(T_segment/stv);
-    [X1,X2,T1,T2] = SampleNonUnif(oX, mlen, slen, '1');
+    if exist('b_overlap_time_interval','var') && b_overlap_time_interval
+        [X1,X2,T1,T2] = SampleNonUnif(oX, mlen, slen, '1', simu_time/T_segment*stv/s_stv(1));
+    else
+        [X1,X2,T1,T2] = SampleNonUnif(oX, mlen, slen, '1');
+    end
     fftlen = mlen;
     fqs = ifftshift((0:fftlen-1)-floor(fftlen/2))/T_segment;
 

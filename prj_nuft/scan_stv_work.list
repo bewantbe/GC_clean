@@ -49,12 +49,12 @@ time	method	data
 r	1	o	scan_stv_work_31.m
 
 
-s_time = [1e6];
+s_time = [1e7];
 max_freq = 1.0 kHz;
 
 time	method	data	file			propose
 u	1	no	scan_stv_work_50.m	correctness test for mX2S_nuft
-r	1	no	scan_stv_work_51.m	correctness test for mX2S_nuft
-
+r	1	no	scan_stv_work_51.m	correctness test for mX2S_nuft % 1182 sec
+r	1	o	scan_stv_work_52.m	correctness test for mX2S_nuft %
 
 
