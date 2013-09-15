@@ -40,7 +40,7 @@ hist_div = 0:0.5:400;         % ISI
 T_segment = 64;               % in ms
 stv0   = 0.125;                   % fine sample rate
 
-clear('signature0');
+clear('signature0', 'b_overlap_time_interval');
 %load 's_net', 's_time', 's_scee', 's_prps', 's_ps', 's_stv', 's_od', 'hist_div', 'maxod', 'T_segment','stv0'
 load([signature, '_info.mat']);
 

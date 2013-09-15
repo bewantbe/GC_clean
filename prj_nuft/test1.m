@@ -2,24 +2,33 @@ id_prps = 1;
 id_ps   = 1;
 
 id_stv  = 1;
-stv     = s_stv(id_stv);
-slen    = round(T_segment/stv);
-%S1 = prps_ps_stv_S  {id_prps, id_ps, id_stv}*stv;
+stv     = s_stv(id_stv)
+slen    = round(T_segment/stv)
 if (exist('signature0', 'var'))
+  mlen = T_segment/stv0;
+  S1 = prps_ps_stv_S  {id_prps, id_ps, id_stv}*stv*(mlen/slen/2)^2;
   fqs= prps_ps_stv_fqs{id_prps, id_ps, id_stv}*1e3;
 else
+  S1 = prps_ps_stv_S  {id_prps, id_ps, id_stv}*stv;
   fqs= prps_ps_stv_fqs{id_prps, id_ps, id_stv}*slen/T_segment*1e3;
 end
-d1 = prps_ps_stv_R  (1,1, id_prps, id_ps, id_stv);
-d2 = prps_ps_stv_R  (2,2, id_prps, id_ps, id_stv);
-dxy= prps_ps_stv_R  (1,2, id_prps, id_ps, id_stv);
+d1 = prps_ps_stv_R(1,1, id_prps, id_ps, id_stv)
+d2 = prps_ps_stv_R(2,2, id_prps, id_ps, id_stv);
+dxy= prps_ps_stv_R(1,2, id_prps, id_ps, id_stv);
 figure(11);
 plot(fftshift(fqs), fftshift(S1(:,1,1)) - d1*stv);
-%hold on
+%%hold on
 figure(12);
-plot(fftshift(fqs), fftshift(S1(:,1,2)-dxy*stv));
-%hold on
+plot(fftshift(fqs), fftshift(S1(:,1,2) - dxy*stv));
+%%hold on
+mean(S1(:, 1, 1))
+max(S1(:, 1, 1))
+fqs(2)-fqs(1)
 
+%figure(11);
+%plot(fftshift(fqs), fftshift(S1(:,1,1)));
+%figure(12);
+%plot(fftshift(fqs), fftshift(S1(:,1,2)));
 
 %S1 = prps_ps_stv_S  {id_prps, id_ps, id_stv};
 %De = prps_ps_stv_R  (1:2,1:2, id_prps, id_ps, id_stv);
