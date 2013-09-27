@@ -35,5 +35,5 @@ for i_trial=1:n_trials
   end
   aveS = aveS + S;
 end
-aveS = aveS / n_trials / fftlen;
-
+%aveS = aveS / n_trials / fftlen;
+aveS = aveS / n_trials / len;       % fftlen does not change scale
