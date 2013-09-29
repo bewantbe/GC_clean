@@ -1,19 +1,20 @@
 % Calculate spectrum from multi-trial non-uniformly sampled data mX
-% mX is  p * len * n_trials  array, the sampled data
-% mT is  len * n_trials  array, the sampling time
-% aveS is fftlen*p*p matrix
-% currently no window function applied
-% does not subtract mean value from original data
+% Input:
+%   mX is  p * len * n_trials  array, the sampled data
+%   mT is  len * n_trials  array, the sampling time, in range [0,1]
+% Output:
+%   aveS is fftlen*p*p matrix
+%   correcponding frequencies: fqs = 0, 1,..., M/2-1, -M/2, -M/2+1,...,-1
+% Currently no window function applied
+% CAUTION: does not subtract mean value from original data
 
-function aveS = mX2S_nuft(mX, mT, fftlen)
-mX = permute(mX,[2 1 3]);          % convert to len * p * n_trials
+function [aveS, fqs] = mX2S_nuft(mX, mT, fftlen)
+mX = permute(mX,[2 1 3]);        % convert to len * p * n_trials
 [len, p, n_trials] = size(mX);
 if exist('fftlen','var') == 0
     fftlen = len;
 end
-
-% window function
-wnd = ones(len,1);
+fqs = ifftshift((0:fftlen-1)-floor(fftlen/2));
 
 desired_accuracy = 6;
 aveS = zeros(fftlen,p,p);
@@ -23,11 +24,11 @@ Jk   = zeros(fftlen, p);
 for i_trial=1:n_trials
   % windowed Fourier transform
   for channel=1:p
-    %Jk(:,channel) = ifftshift(FGG_1d_type1(wnd .* mX(:,channel,i_trial), mT(:,i_trial), fftlen, desired_accuracy));
-    Jk(:,channel) = nufftw(mX(:,channel,i_trial), mT(:,i_trial), fftlen/2);
+    Jk(:,channel) = nufftw(mX(:,channel,i_trial),
+                           2*pi*mT(:,i_trial), fftlen/2);
   end
   % get cross spectrum of one trial
-  % due to symmetric of real data fft, this can be faster
+  % due to symmetric of real data fft, this could be faster
   for chan1=1:p
     for chan2=1:p
       S(:, chan1, chan2) = Jk(:,chan1).*conj(Jk(:,chan2));
@@ -35,5 +36,5 @@ for i_trial=1:n_trials
   end
   aveS = aveS + S;
 end
-%aveS = aveS / n_trials / fftlen;
-aveS = aveS / n_trials / len;       % fftlen does not change scale
+% scale data according to input data length, instead of fftlen
+aveS = aveS / n_trials / len;

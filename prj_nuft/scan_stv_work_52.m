@@ -16,6 +16,7 @@ hist_div = 0:0.5:400;         % ISI
 T_segment = 1000;             % in ms
 stv0   = 0.125;               % fine sample rate
 
+resample_mode = 'r';
 b_overlap_time_interval = true;
 
 scan_stv_work_50_loop;

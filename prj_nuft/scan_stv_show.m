@@ -11,7 +11,8 @@ tic();
 %signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w21';  % 16644 sec
 %signature = 'data_scan_stv/net_2_2_IF_sc2_l1e8_w31';  % 1049 sec
 %signature = 'data_scan_stv/IF_w50_net_2_2_sc=0.02_t=1.000e+06';
-signature = 'data_scan_stv/IF_w51_net_2_2_sc=0.02_t=1.000e+07';  % 1100 sec
+%signature = 'data_scan_stv/IF_w51_net_2_2_sc=0.02_t=1.000e+07';  % 1100 sec
+signature = 'data_scan_stv/IF_w52_net_2_2_sc=0.02_t=1.000e+07';  % 1100 sec
 
 if isempty(strfind(upper(signature),upper('expIF')))
   %s_prps_default = logspace(log10(4.9e-3), log10(4.7e-2), 30);

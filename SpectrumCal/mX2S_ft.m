@@ -4,12 +4,13 @@
 % currently no window function applied
 % does not subtract mean value from original data
 
-function aveS = mX2S_ft(mX, fftlen)
+function [aveS, fqs] = mX2S_ft(mX, fftlen)
 mX = permute(mX,[2 1 3]);          % convert to len * p * n_trials
 [len, p, n_trials] = size(mX);
 if exist('fftlen','var') == 0
     fftlen = len;
 end
+fqs = ifftshift((0:fftlen-1)-floor(fftlen/2));
 
 % window function
 wnd = ones(len,1);

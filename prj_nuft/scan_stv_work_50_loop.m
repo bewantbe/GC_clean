@@ -30,7 +30,7 @@ end
 %datamatname = sprintf('%s_%s_sc=%g_t=%.3e_info.mat', signature, netstr, scee, simu_time);
 %datamatname = [signature, '_info.mat'];
 datamatname = [datamatname, '_info.mat'];
-save('-v7', datamatname, 'signature0', 's_net', 's_time', 's_scee', 's_prps', 's_ps', 's_stv', 's_od', 'hist_div', 'maxod', 'T_segment','stv0','b_overlap_time_interval');
+save('-v7', datamatname, 'signature0', 's_net', 's_time', 's_scee', 's_prps', 's_ps', 's_stv', 's_od', 'hist_div', 'maxod', 'T_segment', 'stv0', 'resample_mode', 'b_overlap_time_interval');
 
 data_path = ['data/', signature, '_'];
 
@@ -79,17 +79,17 @@ for id_stv = 1:length(s_stv)
 
     slen = round(T_segment/stv);
     if exist('b_overlap_time_interval','var') && b_overlap_time_interval
-        [X1,X2,T1,T2] = SampleNonUnif(oX, mlen, slen, '1', simu_time/T_segment*stv/s_stv(1));
+        [X1,T1] = SampleNonUnif(oX, mlen, slen, resample_mode,
+                                simu_time/T_segment*stv/s_stv(1));
     else
-        [X1,X2,T1,T2] = SampleNonUnif(oX, mlen, slen, '1');
+        [X1,T1] = SampleNonUnif(oX, mlen, slen, resample_mode);
     end
     fftlen = mlen;
-    fqs = ifftshift((0:fftlen-1)-floor(fftlen/2))/T_segment;
 
     tic();
-    S_x2 = mX2S_nuft(X1, 2*pi*(T1-1)/mlen, fftlen);
-    %S_x2 = mX2S_nuft(X1, T1);
-    S1 = Makeup4SpectrumFact(S_x2);
+    [S1, fqs] = mX2S_nuft(X1, (T1-1)/mlen, fftlen);
+    fqs = fqs/T_segment;
+    S1 = Makeup4SpectrumFact(S1);
     [gc, de11, de22] = getGCSapp(S1);
     tocs('time spend in GC app');
 
