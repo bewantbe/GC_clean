@@ -89,15 +89,20 @@ for id_stv = 1:length(s_stv)
     gc(eye(p)==1) = [];
     s_gc_p(:,id_stv) = gc;
 
-    if mod(id_stv,4)==0
-        figure(id_stv+4);  set(gcf, 'visible', 'off');
+    if mod(id_stv,1)==0
+        figure();  % seems there is a legend bug in Matlab if assign figure number here
+        set(gcf, 'visible', 'off');
+        set(gca, 'fontsize', 18);
         plot(fftshift(fqs), fftshift(S1(:,1,1)),...
              fftshift(fqs), fftshift(S1(:,2,2)));
         title(sprintf('\\Delta t = %.2f ms', stv));
         legend('Sxx', 'Syy');
-        if (id_stv==4)
+        if (id_stv==1)
             sa=axis();  sa(3)=0;  sa(1)=-fq_max;  sa(2)=fq_max;
         end
+        highest_classical_fq = 0.5/stv;
+        line(highest_classical_fq*[-1 -1; 1 1]', 0.2*sa(2)*[0 1; 0 1]',...
+             'color', 'red');
         axis(sa);
         print('-dpng', sprintf('%s/%s_stv=%05.2f.png',...
           pic_prefix0, strrep(signature, '/', '_'), stv));
