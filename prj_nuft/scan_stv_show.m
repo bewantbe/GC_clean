@@ -90,7 +90,7 @@ for id_stv = 1:length(s_stv)
     s_gc_p(:,id_stv) = gc;
 
     if mod(id_stv,4)==0
-        figure(id_stv+4, 'visible', 'off');
+        figure(id_stv+4);  set(gcf, 'visible', 'off');
         plot(fftshift(fqs), fftshift(S1(:,1,1)),...
              fftshift(fqs), fftshift(S1(:,2,2)));
         title(sprintf('\\Delta t = %.2f ms', stv));
