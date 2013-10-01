@@ -79,7 +79,7 @@ for id_stv = 1:length(s_stv)
 
     slen = round(T_segment/stv);
     if exist('b_overlap_time_interval','var') && b_overlap_time_interval
-        [X1,T1] = SampleNonUnif(oX, mlen, slen, resample_mode,
+        [X1,T1] = SampleNonUnif(oX, mlen, slen, resample_mode,...
                                 simu_time/T_segment*stv/s_stv(1));
     else
         [X1,T1] = SampleNonUnif(oX, mlen, slen, resample_mode);

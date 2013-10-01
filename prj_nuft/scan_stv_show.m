@@ -12,7 +12,9 @@ tic();
 %signature = 'data_scan_stv/net_2_2_IF_sc2_l1e8_w31';  % 1049 sec
 %signature = 'data_scan_stv/IF_w50_net_2_2_sc=0.02_t=1.000e+06';
 %signature = 'data_scan_stv/IF_w51_net_2_2_sc=0.02_t=1.000e+07';  % 1100 sec
-signature = 'data_scan_stv/IF_w52_net_2_2_sc=0.02_t=1.000e+07';  % 1100 sec
+signature = 'data_scan_stv/IF_w52_net_2_2_sc=0.02_t=1.000e+07';
+
+pic_prefix0 = 'pic/';
 
 if isempty(strfind(upper(signature),upper('expIF')))
   %s_prps_default = logspace(log10(4.9e-3), log10(4.7e-2), 30);
@@ -28,7 +30,7 @@ end
 b_spike_train = isempty(strfind(upper(signature),upper('ST')))==1;  % using Spike Train?
 %s_ps_default = [0.001:0.001:0.029];  %29
 
-% scan value sets
+% default scan value set
 s_net  = {'net_2_2'};
 s_time = [2e7];
 s_scee = [0.02];
@@ -39,9 +41,9 @@ maxod  = 99;
 s_od   = 1:maxod;
 hist_div = 0:0.5:400;         % ISI
 T_segment = 64;               % in ms
-stv0   = 0.125;                   % fine sample rate
+stv0   = 0.125;               % fine sample rate
 
-clear('signature0', 'b_overlap_time_interval');
+clear('signature0', 'b_overlap_time_interval', 'resample_mode');
 %load 's_net', 's_time', 's_scee', 's_prps', 's_ps', 's_stv', 's_od', 'hist_div', 'maxod', 'T_segment','stv0'
 load([signature, '_info.mat']);
 
@@ -68,8 +70,7 @@ for id_stv = 1:length(s_stv)
     stv = s_stv(id_stv);
 
     od = 20;
-    %prps_ps_stv_oGC(:,:,:, id_prps, id_ps, id_stv) = oGC;
-    %prps_ps_stv_R  (:,:, id_prps, id_ps, id_stv) = R;
+    R = prps_ps_stv_R  (:,:, id_prps, id_ps, 1);
     S1 = prps_ps_stv_S  {id_prps, id_ps, id_stv};
     fqs= prps_ps_stv_fqs{id_prps, id_ps, id_stv};
 
@@ -77,23 +78,58 @@ for id_stv = 1:length(s_stv)
     %de = prps_ps_stv_oDe(:,:,od, id_prps, id_ps, id_stv);
     %s_Sde(:,id_stv) = de(1:(p+1):(p*p));
 
-    gc = prps_ps_stv_Sgc(:, :, id_prps, id_ps, id_stv);
-    s_Sde(:,id_stv) = prps_ps_stv_Sde(:, id_prps, id_ps, id_stv);
-    gc(eye(p)==1) = [];
-    s_gc_p(:,id_stv) = reshape(gc,[],1);
+    % cut frequency then calculate GC
+    fq_max = 0.25;
+    [S1, fqs] = FreqCut(S1, fqs, fq_max);
+    slen = round(T_segment/stv);
+    S1 = nuft_bias_removal(S1, R(:,1:p), stv, slen);
+    [gc, de11, de22] = getGCSapp(S1);
 
-    %figure(id_stv+4);
-    %plot(fftshift(fqs), fftshift(S1(:,1,1)));
+    %gc = prps_ps_stv_Sgc(:, :, id_prps, id_ps, id_stv);
+    gc(eye(p)==1) = [];
+    s_gc_p(:,id_stv) = gc;
+
+    if mod(id_stv,4)==0
+        figure(id_stv+4, 'visible', 'off');
+        plot(fftshift(fqs), fftshift(S1(:,1,1)),...
+             fftshift(fqs), fftshift(S1(:,2,2)));
+        title(sprintf('\\Delta t = %.2f ms', stv));
+        legend('Sxx', 'Syy');
+        if (id_stv==4)
+            sa=axis();  sa(3)=0;  sa(1)=-fq_max;  sa(2)=fq_max;
+        end
+        axis(sa);
+        print('-dpng', sprintf('%s/%s_stv=%05.2f.png',...
+          pic_prefix0, strrep(signature, '/', '_'), stv));
+    end
+
+    s_Sde(:,id_stv) = prps_ps_stv_Sde(:, id_prps, id_ps, id_stv);
 end  % stv
     %prps_ps_aveISI(:, id_prps, id_ps) = aveISI;
     %prps_ps_ISI_dis(:,:,id_prps, id_ps) = ISI_dis;
+
+    mode_eif= ~isempty(strfind(lower(signature),lower('expIF')));
+    if mode_eif
+        pic_prefix = [pic_prefix0, 'expIF'];
+    else
+        pic_prefix = [pic_prefix0, 'IF'];
+    end
+    mode_st = ~isempty(strfind(lower(signature),lower('ST')));
+    if mode_st
+        pic_prefix = [pic_prefix, '_ST'];
+    end
+    pic_prefix = sprintf('%s_%s_sc=%.4f_', pic_prefix, netstr, scee);
+    pic_suffix = sprintf('_stv=%.2f_t=%.2e', stv, simu_time);
+    pic_output = @(st)print('-depsc2',[pic_prefix, st, pic_suffix, '.eps']);
 
     % save pics
     figure(1);
     plot(s_stv, s_gc_p(:,:),'-o');
     legend('1->2', '2->1');
+    pic_output('GC_stv');
     figure(2);
     plot(s_stv, s_Sde(:,:));
+    pic_output('De_stv');
 end  % ps
 end  % prps
      %load

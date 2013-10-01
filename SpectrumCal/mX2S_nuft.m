@@ -24,7 +24,7 @@ Jk   = zeros(fftlen, p);
 for i_trial=1:n_trials
   % windowed Fourier transform
   for channel=1:p
-    Jk(:,channel) = nufftw(mX(:,channel,i_trial),
+    Jk(:,channel) = nufftw(mX(:,channel,i_trial),...
                            2*pi*mT(:,i_trial), fftlen/2);
   end
   % get cross spectrum of one trial
