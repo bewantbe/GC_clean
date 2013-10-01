@@ -10,9 +10,9 @@ tic();
 %signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w11';  % 32099 sec
 %signature = 'data_scan_stv/net_2_2_IF_sc2_l1e7_w21';  % 16644 sec
 %signature = 'data_scan_stv/net_2_2_IF_sc2_l1e8_w31';  % 1049 sec
-%signature = 'data_scan_stv/IF_w50_net_2_2_sc=0.02_t=1.000e+06';
+signature = 'data_scan_stv/IF_w50_net_2_2_sc=0.02_t=1.000e+07';
 %signature = 'data_scan_stv/IF_w51_net_2_2_sc=0.02_t=1.000e+07';  % 1100 sec
-signature = 'data_scan_stv/IF_w52_net_2_2_sc=0.02_t=1.000e+07';
+%signature = 'data_scan_stv/IF_w52_net_2_2_sc=0.02_t=1.000e+07';
 
 pic_prefix0 = 'pic/';
 
@@ -82,7 +82,9 @@ for id_stv = 1:length(s_stv)
     fq_max = 0.25;
     [S1, fqs] = FreqCut(S1, fqs, fq_max);
     slen = round(T_segment/stv);
-    S1 = nuft_bias_removal(S1, R(:,1:p), stv, slen);
+    if (strcmp(resample_mode, 'r'))
+        S1 = nuft_bias_removal(S1, R(:,1:p), stv, slen);
+    end
     [gc, de11, de22] = getGCSapp(S1);
 
     %gc = prps_ps_stv_Sgc(:, :, id_prps, id_ps, id_stv);
