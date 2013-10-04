@@ -136,11 +136,13 @@ end  % stv
 
     % save pics
     figure();
+    set(gca, 'fontsize', 18);
     plot(s_stv, s_gc_p(:,:),'-o');
     legend('1->2', '2->1');
     pic_output('GC_stv');
 
     figure();
+    set(gca, 'fontsize', 18);
     plot(s_stv, s_linear_gc_p(:,:),'-o');
     legend('1->2', '2->1');
     pic_output('GC_stv_linear');
