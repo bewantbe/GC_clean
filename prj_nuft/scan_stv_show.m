@@ -65,7 +65,8 @@ for id_prps = 1:length(s_prps)
 for id_ps = 1:length(s_ps)
  ps = s_ps(id_ps);
  pr = prps / ps;
- s_gc = zeros(p*p-p,length(s_stv));
+ s_gc_p = zeros(p*p-p,length(s_stv));
+ s_linear_gc_p = zeros(p*p-p,length(s_stv));
 for id_stv = 1:length(s_stv)
     stv = s_stv(id_stv);
 
@@ -74,7 +75,9 @@ for id_stv = 1:length(s_stv)
     S1 = prps_ps_stv_S  {id_prps, id_ps, id_stv};
     fqs= prps_ps_stv_fqs{id_prps, id_ps, id_stv};
 
-    %gc = prps_ps_stv_oGC(:,:,od, id_prps, id_ps, id_stv);
+    gc = prps_ps_stv_oGC(:,:,od, id_prps, id_ps, id_stv);
+    gc(eye(p)==1) = [];
+    s_linear_gc_p(:,id_stv) = gc;
     %de = prps_ps_stv_oDe(:,:,od, id_prps, id_ps, id_stv);
     %s_Sde(:,id_stv) = de(1:(p+1):(p*p));
 
@@ -106,8 +109,10 @@ for id_stv = 1:length(s_stv)
         line(highest_classical_fq*[-1 -1; 1 1]', 0.2*sa(2)*[0 1; 0 1]',...
              'color', 'red');
         axis(sa);
-        print('-dpng', sprintf('%s/%s_stv=%05.2f.png',...
-          pic_prefix0, strrep(signature, '/', '_'), stv));
+        if id_stv==1 || id_stv==10 || id_stv==40
+            print('-depsc2', sprintf('%s/%s_stv=%05.2f.eps',...
+              pic_prefix0, strrep(signature, '/', '_'), stv));
+        end
     end
 
     s_Sde(:,id_stv) = prps_ps_stv_Sde(:, id_prps, id_ps, id_stv);
@@ -117,26 +122,32 @@ end  % stv
 
     mode_eif= ~isempty(strfind(lower(signature),lower('expIF')));
     if mode_eif
-        pic_prefix = [pic_prefix0, 'expIF'];
+        pic_prefix = ['expIF'];
     else
-        pic_prefix = [pic_prefix0, 'IF'];
+        pic_prefix = ['IF'];
     end
     mode_st = ~isempty(strfind(lower(signature),lower('ST')));
     if mode_st
         pic_prefix = [pic_prefix, '_ST'];
     end
-    pic_prefix = sprintf('%s_%s_sc=%.4f_', pic_prefix, netstr, scee);
-    pic_suffix = sprintf('_stv=%.2f_t=%.2e', stv, simu_time);
+    pic_suffix = sprintf('_%s_%s_sc=%.4f_t=%.2e', pic_prefix, netstr, scee, simu_time);
+    pic_prefix = sprintf('%s%s_', pic_prefix0, strrep(signature, '/', '_'));
     pic_output = @(st)print('-depsc2',[pic_prefix, st, pic_suffix, '.eps']);
 
     % save pics
-    figure(1);
+    figure();
     plot(s_stv, s_gc_p(:,:),'-o');
     legend('1->2', '2->1');
     pic_output('GC_stv');
-    figure(2);
-    plot(s_stv, s_Sde(:,:));
-    pic_output('De_stv');
+
+    figure();
+    plot(s_stv, s_linear_gc_p(:,:),'-o');
+    legend('1->2', '2->1');
+    pic_output('GC_stv_linear');
+    
+    %figure(3);
+    %plot(s_stv, s_Sde(:,:));
+    %pic_output('De_stv');
 end  % ps
 end  % prps
      %load
