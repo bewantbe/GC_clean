@@ -56,5 +56,6 @@ time	method	data	file			propose
 u	1	no	scan_stv_work_50.m	correctness test for mX2S_nuft % 1335.403 sec
 r	1	no	scan_stv_work_51.m	correctness test for mX2S_nuft % 1346.528 sec
 r	1	o	scan_stv_work_52.m	correctness test for mX2S_nuft % 21422.178 sec
+r	1	o	scan_stv_work_53.m	correctness test for mX2S_nuft % 
 
 
