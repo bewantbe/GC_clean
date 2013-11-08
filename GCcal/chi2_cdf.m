@@ -4,6 +4,11 @@ function p = chi2_cdf(x,k,c)
   x(x<0) = 0;
   c(c<0) = 0;
 
+  if ~exist('c','var') || c==0
+    p = chi2cdf(x,k);
+    return
+  end
+
 % A good approximation
   h = 1 - 2/3 * (k+c)*(k+3*c)/(k+2*c)^2;
   p = (k+2*c)/(k+c)^2;
