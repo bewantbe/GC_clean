@@ -7,11 +7,11 @@ tocs = @(st) fprintf('%s: t = %6.3fs\n', st, toc());
 if isempty(strfind(upper(signature),upper('expIF')))
   %s_prps_default = logspace(log10(4.9e-3), log10(4.7e-2), 30);
   dt_std = 1.0/32;
-  model_mode = 'IF';
+  model_neu = 'IF';
 else
   %s_prps_default = logspace(log10(1.5e-3), log10(1.2e-1), 30);
   dt_std = 0.004;
-  model_mode = 'EIF';
+  model_neu = 'EIF';
 end
 b_spike_train = isempty(strfind(upper(signature),upper('ST')))==1;  % using Spike Train?
 %s_ps_default = [0.001:0.001:0.029];  %29

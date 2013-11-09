@@ -29,11 +29,11 @@ network = getnetwork(netstr);
 p = size(network,1);
 prps = pr*ps;
 s_ps = linspace(0.001, 0.02, 100);
+s_p_gc = zeros(p*p-p, length(s_ps));
 s_b_finished = false(size(s_ps));
 s_b_launched = false(size(s_ps));
 [~, ncpu] = system('nproc');         % get number of cpus
 ncpu = max([str2num(ncpu), 1]);      % or leave one for other job?
-s_p_gc = zeros(p*p-p, length(s_ps));
 % delete the data files in this loop
 for id_ps=1:length(s_ps)
   ps = s_ps(id_ps);

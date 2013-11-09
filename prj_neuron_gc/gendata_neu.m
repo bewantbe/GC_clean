@@ -15,7 +15,7 @@
 % If you want a new experiment, run
 %  change '-dt 0.0078125 --RC-filter' to 'new -dt 0.0078125 --RC-filter'
 
-function [X, ISI, ras] = gendata_neu(netstr, scee, pr, ps, simu_time, stv, extpara)
+function [X, ISI, ras] = gendata_neu(netstr, scee, pr, ps, simu_time, stv, extpara, data_dir_prefix)
 if (exist('stv', 'var')==0)
     stv = 0.5;
 end
@@ -98,7 +98,15 @@ else
         error('number of neurons does not match the network!');
     end
 end
-file_prefix = [pwd(), '/data/'];   % force current dir
+if filesep == '\'
+    fs = '\\';          % in M$ windows
+else
+    fs = '/';
+end
+if ~exist('data_dir_prefix', 'var')
+    data_dir_prefix = ['data', '/'];
+end
+file_prefix = [pwd(), '/', data_dir_prefix];   % force current dir
 if use_exp_IF
     file_prefix = [file_prefix, 'EIF_'];
 end
@@ -122,11 +130,6 @@ if new_run
 end
 
 if (exist(output_RAS_name, 'file') == 0 || new_run) && ~mode_read_only
-    if filesep == '\'
-      fs = '\\';          % in M$ windows
-    else
-      fs = '/';
-    end
 %    static_param = 'raster_tuning -ng -v --bin-save';     % if you are using M$ Windows
     if use_exp_IF
         static_param = [pathdir, fs, 'raster_tuning_expIF -ng -v --bin-save -inf -'];
@@ -191,3 +194,4 @@ else
 end
 
 end
+% vim: set ts=4 sw=4 ss=4
