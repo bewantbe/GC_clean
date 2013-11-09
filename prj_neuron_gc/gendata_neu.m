@@ -19,13 +19,22 @@ function [X, ISI, ras] = gendata_neu(netstr, scee, pr, ps, simu_time, stv, extpa
 if (exist('stv', 'var')==0)
     stv = 0.5;
 end
+new_run    = false;
+use_exp_IF = false;
+use_common_poisson = false;
+pI = -1;
+mode_rm_only = false;
+mode_read_only = false;
+mode_run_in_background = false;
 if (exist('extpara','var')==0)
     extpara = '';
-    new_run    = false;
-    use_exp_IF = false;
-    use_common_poisson = false;
-    pI = -1;
 else
+    if strcmpi(extpara(1:2), 'rm') == 1
+        mode_rm_only = true;         % remove the output files then exit
+    end
+    if strcmpi(extpara(1:4), 'read') == 1
+        mode_read_only = true;
+    end
     if (length(extpara)>=3) && (1==strcmpi(extpara(1:3),'new'))
         new_run = true;
         extpara = extpara(4:end);
@@ -60,6 +69,10 @@ else
         pE = -1;
         pI = -1;
     end
+    s_tmp = strtrim(extpara);
+    if strcmp(s_tmp(end), '&') == 1
+        mode_run_in_background = true;
+    end
 end
 
 pathdir = fileparts(mfilename('fullpath'));
@@ -92,7 +105,23 @@ end
 output_name     = [file_prefix, 'volt_',file_inf_st,'.dat'];
 output_ISI_name = [file_prefix, 'ISI_', file_inf_st,'.txt'];
 output_RAS_name = [file_prefix, 'RAS_', file_inf_st,'.txt'];
-if (exist(output_RAS_name, 'file') == 0 || new_run)
+
+if mode_rm_only
+    system(['rm -f ', output_name]);
+    system(['rm -f ', output_ISI_name]);
+    system(['rm -f ', output_RAS_name]);
+    X = [];
+    ISI = [];
+    ras = [];
+    return
+end
+
+if new_run
+    system(['rm -f ', output_ISI_name]);
+    system(['rm -f ', output_RAS_name]);
+end
+
+if (exist(output_RAS_name, 'file') == 0 || new_run) && ~mode_read_only
     if filesep == '\'
       fs = '\\';          % in M$ windows
     else
@@ -119,6 +148,27 @@ if (exist(output_RAS_name, 'file') == 0 || new_run)
     rt = system([cmdst, ' ', extpara]);
 else
     rt = 0;
+end
+
+if mode_run_in_background
+    X=[];
+    ISI=rt;
+    RAS=[];
+    return
+end
+
+if mode_read_only
+    % fixme: is there a way to test whether the files are using by other program in Matlab? lsof is not portable to M$
+    % whether the file is exist and filled?
+    f_info = stat(output_RAS_name);
+    if ~isempty(f_info) && (time() - f_info.mtime > 1.0)
+        rt = 0;
+    else
+        X=[];
+        ISI=[];
+        ras=[];
+        return
+    end
 end
 
 if rt==0

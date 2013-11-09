@@ -1,6 +1,6 @@
-%
+% get structure from name of the network
 
-function network = getnetwork(netstr);
+function network = getnetwork(netstr)
 
 pathdir = fileparts(mfilename('fullpath'));
 if isempty(netstr)
@@ -10,4 +10,3 @@ else
     matname = [pathdir, '/network/', netstr, '.txt'];
     network = load('-ascii', matname);
 end
-
