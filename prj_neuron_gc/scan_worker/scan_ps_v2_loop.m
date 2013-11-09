@@ -5,6 +5,8 @@
 t0 = tic();
 tocs = @(st) fprintf('%s: t = %6.3fs\n', st, toc());
 
+ext_T = 1e4;  % avoid head effect
+
 if isempty(strfind(upper(signature),upper('expIF')))
   dt_std = 1.0/32;
   model_neu = 'IF';
@@ -74,29 +76,30 @@ for id_stv=1:length(s_stv)
     continue
   else
     if s_b_launched(id_parallel)
-      %fprintf('id_ps=%d try read data.\n', id_parallel);  flushstdout();
-      [X, ISI, ras] = gendata_neu(netstr, scee, pr, ps, simu_time, stv, ['read ' extst], data_dir_prefix);
+      [X, ISI, ras] = gendata_neu(netstr, scee, pr, ps, simu_time+ext_T, stv, ['read ' extst], data_dir_prefix);
+      X = X(:, round(ext_T/stv)+1:end);  % cut head
+      if ~isempty(ras)
+        ras(ras(:,2)<=ext_T, :) = [];
+        ras(:,2) = ras(:,2) - ext_T;
+      end
       if isempty(X)
-        %fprintf('id_ps=%d fail to read data.\n', id_parallel);  flushstdout();
         pause(0.1);   % save CPU time
         continue
       end
     else
       % enough available cpu resources?
       if sum(s_b_launched(:))-sum(s_b_finished(:))>=ncpu 
-        %disp('lack of resources');
         pause(0.1);   % save CPU time
         goto_to_while_loop = true;
         break;        % restart the loop, wait for the launched ones
       end
-      gendata_neu(netstr, scee, pr, ps, simu_time, stv, ['new ', extst, ' &'], data_dir_prefix);
+      gendata_neu(netstr, scee, pr, ps, simu_time+ext_T, stv, ['new ', extst, ' &'], data_dir_prefix);
       s_b_launched(id_parallel) = true;
-      fprintf('id_ps=%d launched.\n', id_parallel);  flushstdout();
+      fprintf('id_parallel=%d launched.\n', id_parallel);  flushstdout();
       continue
     end
   end
 
-  %[X, ISI, ras] = gendata_neu(netstr, scee, pr, ps, simu_time, stv, extst, data_dir_prefix);
   if mode_ST
     for neuron_id = 1:p
       st = SpikeTrain(ras, len, neuron_id, 1, stv);
@@ -110,6 +113,9 @@ for id_stv=1:length(s_stv)
   prps_ps_stv_oDe(:,:,:, id_prps, id_ps, id_stv) = oDe;
   prps_ps_stv_R  (:,:, id_prps, id_ps, id_stv) = R;
   if id_stv==1
+    for id_p = 1:p  % recount ISI
+      ISI(id_p) = simu_time/(sum(ras(:,1)==id_p,1));
+    end
     prps_ps_aveISI(:, id_prps, id_ps) = ISI;
     ISI_dis = zeros(p,length(hist_div));
     for kk = 1:p
@@ -121,8 +127,8 @@ for id_stv=1:length(s_stv)
   end
   s_b_finished(id_parallel) = true;
   % save disk space
-  gendata_neu(netstr, scee, pr, ps, simu_time, stv, ['rm ' extst], data_dir_prefix);
-  fprintf('id_ps=%d finished.\n', id_parallel);  flushstdout();
+  gendata_neu(netstr, scee, pr, ps, simu_time+ext_T, stv, ['rm ' extst], data_dir_prefix);
+  fprintf('id_parallel=%d finished.\n', id_parallel);  flushstdout();
   ccnt = ccnt + 1;
   fprintf('  -- ps %f, pr %f, prps %f, cnt=%d\n',ps,pr,prps,ccnt); flushstdout(); 
 end  % for stv
@@ -137,7 +143,7 @@ end  % for prps
 
 end % while parallel
 
- datamatname = sprintf('%s_%s_sc=%g_t=%.3e.mat', signature, netstr, scee, simu_time);
+ datamatname = sprintf('%s_%s_sc=%g_t=%.1e.mat', signature, netstr, scee, simu_time);
  save('-v7', datamatname, 'prps_ps_stv_oGC', 'prps_ps_stv_oDe', 'prps_ps_stv_R', 'prps_ps_aveISI', 'prps_ps_ISI_dis');
 end  % scee
 end  % simu_time

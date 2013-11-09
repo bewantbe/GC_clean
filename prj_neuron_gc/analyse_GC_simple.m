@@ -29,15 +29,15 @@ netstr = 'net_2_2';
 scee = 0.01;
 %pr = 0.5;
 %ps = 0.0075;
-pr = 1;
-ps = 0.012;
+pr = 0.31;
+ps = 0.01;
 %pr = 2;
 %ps = 0.006;
 %pr = 4;
 %ps = 0.003;
 %pr = 1;
 %ps = 0.012;
-simu_time = 5e7;
+simu_time = 1e6;
 extst = 'new --RC-filter';
 
 %mode_IF = 'IF';
@@ -83,7 +83,15 @@ end
 if ~exist('stv','var')
     stv = 1/2;
 end
-[X, ISI, ras] = gendata_neu(netstr, scee, pr, ps, simu_time, stv, extst);
+ext_T = 1e4;
+[X, ISI, ras] = gendata_neu(netstr, scee, pr, ps, simu_time+ext_T, stv, extst);
+X = X(:, round(ext_T/stv)+1:end);
+if ~isempty(ras)
+  ras(ras(:,2)<=ext_T, :) = [];
+end
+for id_p = 1:p;
+  ISI(id_p) = simu_time/(sum(ras(:,1)==id_p,1));
+end
 
 %fprintf('common   input rate: %.2f\n', sum(1./ISI(3:end)));
 %fprintf('external input rate: %.2f\n', pr_mul_first*pr);
@@ -179,12 +187,12 @@ disp([num2str(R(1,1)/oDe(1,1,bic_od)), ' ', num2str(R(2,2)/oDe(2,2,bic_od))]);
 %              st_para0, netstr, scee, pr, ps, stv, simu_time);
 %save('-v7', ['result_',st_para,'.mat']);
 
-rg = 34:99;
-gc_scale = 1e-4;
-figure(1);
-%plot(s_od(rg), squeeze(oGC(1,2,rg))/gc_scale);
-plot(s_od(rg), (squeeze(oGC(1,2,rg)) - s_od(rg)'/len)/gc_scale);
-figure(2);
-%plot(s_od(rg), squeeze(oGC(2,1,rg))/gc_scale)
-plot(s_od(rg), (squeeze(oGC(2,1,rg)) - s_od(rg)'/len)/gc_scale)
+%rg = 34:99;
+%gc_scale = 1e-4;
+%figure(1);
+%%plot(s_od(rg), squeeze(oGC(1,2,rg))/gc_scale);
+%plot(s_od(rg), (squeeze(oGC(1,2,rg)) - s_od(rg)'/len)/gc_scale);
+%figure(2);
+%%plot(s_od(rg), squeeze(oGC(2,1,rg))/gc_scale)
+%plot(s_od(rg), (squeeze(oGC(2,1,rg)) - s_od(rg)'/len)/gc_scale)
 
