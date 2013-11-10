@@ -22,6 +22,7 @@ end
 new_run    = false;
 use_exp_IF = false;
 use_common_poisson = false;
+return_X_name = false;
 pI = -1;
 mode_rm_only = false;
 mode_read_only = false;
@@ -38,20 +39,18 @@ else
     if (length(extpara)>=3) && (1==strcmpi(extpara(1:3),'new'))
         new_run = true;
         extpara = extpara(4:end);
-    else
-        new_run = false;
     end
     if (length(extpara)>=5) && (1==strcmpi(extpara(1:5),'ExpIF'))
         use_exp_IF = true;
         extpara = extpara(6:end);
-    else
-        use_exp_IF = false;
     end
     if (length(extpara)>=2) && (1==strcmpi(extpara(1:2),'co'))
         use_common_poisson = true;
         extpara = extpara(3:end);
-    else
-        use_common_poisson = false;
+    end
+    if (length(extpara)>=5) && (1==strcmpi(extpara(1:5),'nameX'))
+        return_X_name = true;
+        extpara = extpara(6:end);
     end
     fp = strfind(extpara,'-n ');  % number of neurons
     if (length(fp)>0)
@@ -176,9 +175,13 @@ end
 
 if rt==0
     if (nargout>0)
-        fid = fopen(output_name, 'r');
-        X = fread(fid, [p, Inf], 'double');
-        fclose(fid);
+        if return_X_name
+            X = output_name;
+        else
+            fid = fopen(output_name, 'r');
+            X = fread(fid, [p, Inf], 'double');
+            fclose(fid);
+        end
     end
     if (nargout>1)
         ISI = load('-ascii', output_ISI_name);

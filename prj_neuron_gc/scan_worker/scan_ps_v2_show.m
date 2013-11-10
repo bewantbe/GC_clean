@@ -3,8 +3,8 @@
 %function scan_all_analysis
 tic();
 
-%s_signature = {'data_scan_ps/v2_w1_net_2_2_sc=0.02_t=1.0e+05'};
-s_signature = {'data_scan_ps/v2_w10_net_2_2_sc=0.01_t=1.0e+06'};
+s_signature = {'data_scan_ps/v2_w10_net_2_2_sc=0.01_t=1.0e+07'};
+s_signature = {'data_scan_ps/v2_w11_net_2_2_sc=0.01_t=1.0e+07'};
 
 pic_prefix0 = 'pic_tmp/';
 od_mode = 1; % 1 is 'BIC', 2 is 'AIC', 3 is 'BICall'

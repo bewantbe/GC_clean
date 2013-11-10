@@ -29,8 +29,8 @@ netstr = 'net_2_2';
 scee = 0.01;
 %pr = 0.5;
 %ps = 0.0075;
-pr = 0.31;
-ps = 0.01;
+pr = 0.23;
+ps = 0.02;
 %pr = 2;
 %ps = 0.006;
 %pr = 4;
@@ -89,7 +89,7 @@ X = X(:, round(ext_T/stv)+1:end);
 if ~isempty(ras)
   ras(ras(:,2)<=ext_T, :) = [];
 end
-for id_p = 1:p;
+for id_p = 1:size(X,1)
   ISI(id_p) = simu_time/(sum(ras(:,1)==id_p,1));
 end
 
