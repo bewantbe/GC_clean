@@ -12,7 +12,8 @@ if ~exist('od_max', 'var')
   od_max = 99;
 end
 s_od = 1:od_max;
-[oGC, oDe, R] = AnalyseSeries(X, s_od);
+%[oGC, oDe, R] = AnalyseSeries(X, s_od);
+[oGC, oDe, R] = AnalyseSeriesFast(X, s_od);
 [aic_od, bic_od, zero_GC, oAIC, oBIC] = AnalyseSeries2(s_od, oGC, oDe, len);
 %save('-v6','tmp_gc.mat','p','len','s_od','oGC','oDe','R');
 

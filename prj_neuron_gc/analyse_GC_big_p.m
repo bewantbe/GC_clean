@@ -14,14 +14,14 @@ pic_prefix0 = 'pic_tmp/';
 
 set(0, 'defaultfigurevisible', 'off');
 
-auto_gc_zero_cut = true;
+auto_gc_zero_cut = false;
 b_output_pics    = true;
 b_cal_net        = false;
 b_use_pairGC     = false;
 
 p_val = 2e-4;  % aic_od 1e-15 and 1.65 for S=0.01, bic_od 1e-2 and 1.015 for S=0.005
 
-s_case_th = [106];  %[20 2 21 22 23 24] %[1 2 3 4 5 6 7 8]  [32 33 34]
+s_case_th = [111];  %[20 2 21 22 23 24] %[1 2 3 4 5 6 7 8]  [32 33 34]
 n_case = length(s_case_th);
 
 s_stv= zeros(1, n_case);
@@ -147,9 +147,19 @@ switch case_th
   case 104
     load([res_dir,'result_IF_net_100_21_p[80,20]_sc=[0.004,0.004,0.008,0.008]_pr=1.00_ps=0.012_stv=1.00_t=1.00e+07.mat']);
   case 105
-    load([res_dir,'result_IF_net_100_20_p[80,20]_sc=[0.005,0.005,0.007,0.007]_pr=1.00_ps=0.012_stv=1.00_t=1.00e+06.mat']);
+    load([res_dir,'result_IF_net_100_20_p[80,20]_sc=[0.005,0.005,0.007,0.007]_pr=1.00_ps=0.012_stv=0.50_t=1.00e+06.mat']);
   case 106
+    load([res_dir,'result_IF_net_100_20_p[80,20]_sc=[0.005,0.005,0.007,0.007]_pr=1.00_ps=0.012_stv=1.00_t=1.00e+06.mat']);
+  case 107
+    load([res_dir,'result_IF_net_100_21_p[80,20]_sc=[0.005,0.005,0.007,0.007]_pr=1.00_ps=0.012_stv=0.50_t=1.00e+06.mat']);
+  case 108
     load([res_dir,'result_IF_net_100_21_p[80,20]_sc=[0.005,0.005,0.007,0.007]_pr=1.00_ps=0.012_stv=1.00_t=1.00e+06.mat']);
+  case 109
+    load([res_dir,'result_IF_net_100_01_p[80,20]_sc=[0.006,0.006,0.006,0.006]_pr=0.24_ps=0.020_stv=0.50_t=1.00e+06.mat']);
+  case 110 % C.4a
+    load([res_dir,'result_IF_net_100_20_p[80,20]_sc=[0.006,0.006,0.006,0.006]_pr=0.24_ps=0.020_stv=0.50_t=1.00e+06.mat']);
+  case 111 % C.5a
+    load([res_dir,'result_IF_net_100_21_p[80,20]_sc=[0.006,0.006,0.006,0.006]_pr=0.24_ps=0.020_stv=0.50_t=1.00e+06.mat']);
 
   otherwise
     error('no this case!');
@@ -173,8 +183,13 @@ if ~exist('pI', 'var') || pI==0
   st_para = sprintf('_%s_sc=%1.3f_pr=%1.2f_ps=%1.3f_stv=%1.2f_t=%1.2e',...
                     netstr, scee, pr, ps, stv, simu_time);
 else
-  st_para = sprintf('_%s_p[%d,%d]_sc=%1.3f_pr=%1.2f_ps=%1.3f_stv=%1.2f_t=%1.2e',...
-                    netstr, pE, pI, scee, pr, ps, stv, simu_time);
+  if exist('sc','var')
+    st_para = sprintf('_%s_p[%d,%d]_sc=[%1.3f,%1.3f,%1.3f,%1.3f]_pr=%1.2f_ps=%1.3f_stv=%1.2f_t=%1.2e',...
+                      netstr, pE, pI, sc(1), sc(2), sc(3), sc(4), pr, ps, stv, simu_time);
+  else
+    st_para = sprintf('_%s_p[%d,%d]_sc=%1.3f_pr=%1.2f_ps=%1.3f_stv=%1.2f_t=%1.2e',...
+                      netstr, pE, pI, scee, pr, ps, stv, simu_time);
+  end
 end
 pic_prefix = [pic_prefix, st_para];
 pic_output       = @(st)print('-deps'  ,[pic_prefix, st, '.eps']);
