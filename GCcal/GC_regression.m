@@ -32,14 +32,18 @@ end
 
 A  = ARregression(R(:,1:p+p*od));
 rd = zeros(p,len);
-for k=1:p
-  rd(k,:) = filter([1, A(k,k:p:end)], [1], X(k,:));
-  for j=1:p
-    if (k==j)
-      continue;
+if p==1
+  for k=1:p
+    rd(k,:) = filter([1, A(k,k:p:end)], [1], X(k,:));
+    for j=1:p
+      if (k==j)
+        continue;
+      end
+      rd(k,:) = filter([0, A(k,j:p:end)], [1], X(j,:)) + rd(k,:);
     end
-    rd(k,:) = filter([0, A(k,j:p:end)], [1], X(j,:)) + rd(k,:);
   end
+else
+  rd = MAfilter_v5(A, X);
 end
 
 X = bsxfun(@plus, X, aveX);

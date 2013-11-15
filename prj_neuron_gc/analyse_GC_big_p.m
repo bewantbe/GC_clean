@@ -21,7 +21,7 @@ b_use_pairGC     = false;
 
 p_val = 2e-4;  % aic_od 1e-15 and 1.65 for S=0.01, bic_od 1e-2 and 1.015 for S=0.005
 
-s_case_th = [102];  %[20 2 21 22 23 24] %[1 2 3 4 5 6 7 8]  [32 33 34]
+s_case_th = [106];  %[20 2 21 22 23 24] %[1 2 3 4 5 6 7 8]  [32 33 34]
 n_case = length(s_case_th);
 
 s_stv= zeros(1, n_case);
@@ -137,10 +137,19 @@ switch case_th
   case 69  % found a small network ? EI use stv=9
     load([res_dir,'result_IF_net_100_rs01_p[80,20]_sc=[0.005,0.005,0.007,0.007]_pr=1.00_ps=0.012_stv=9.00_t=1.00e+06.mat']);
 
-  case 101  % extra case about E and I
+  % extra cases about E and I
+  case 101
     load([res_dir,'result_IF_net_100_20_p[80,20]_sc=[0.004,0.004,0.008,0.008]_pr=1.00_ps=0.012_stv=1.00_t=1.00e+06.mat']);
   case 102
     load([res_dir,'result_IF_net_100_21_p[80,20]_sc=[0.004,0.004,0.008,0.008]_pr=1.00_ps=0.012_stv=1.00_t=1.00e+06.mat']);
+  case 103
+    load([res_dir,'result_IF_net_100_20_p[80,20]_sc=[0.004,0.004,0.008,0.008]_pr=1.00_ps=0.012_stv=1.00_t=1.00e+07.mat']);
+  case 104
+    load([res_dir,'result_IF_net_100_21_p[80,20]_sc=[0.004,0.004,0.008,0.008]_pr=1.00_ps=0.012_stv=1.00_t=1.00e+07.mat']);
+  case 105
+    load([res_dir,'result_IF_net_100_20_p[80,20]_sc=[0.005,0.005,0.007,0.007]_pr=1.00_ps=0.012_stv=1.00_t=1.00e+06.mat']);
+  case 106
+    load([res_dir,'result_IF_net_100_21_p[80,20]_sc=[0.005,0.005,0.007,0.007]_pr=1.00_ps=0.012_stv=1.00_t=1.00e+06.mat']);
 
   otherwise
     error('no this case!');
