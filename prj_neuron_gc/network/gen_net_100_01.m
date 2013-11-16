@@ -1,4 +1,4 @@
-% generate group network from simle network
+% generate big 0/1 random netowrk. 20% edges
 
 netstr = 'net_100_01';
 

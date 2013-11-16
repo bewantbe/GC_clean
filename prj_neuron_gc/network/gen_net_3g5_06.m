@@ -1,4 +1,4 @@
-% generate group network from simle network
+% generate group network from simple network
 
 neu_network = load('-ascii', 'net_3_06.txt');
 kp = 5;                     % neurons in each group

@@ -1,4 +1,4 @@
-% generate group network from simle network
+% generate big regular netowrk
 
 netstr = 'net_100_10';
 

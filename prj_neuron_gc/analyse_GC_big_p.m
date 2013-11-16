@@ -21,7 +21,7 @@ b_use_pairGC     = false;
 
 p_val = 2e-4;  % aic_od 1e-15 and 1.65 for S=0.01, bic_od 1e-2 and 1.015 for S=0.005
 
-s_case_th = [111];  %[20 2 21 22 23 24] %[1 2 3 4 5 6 7 8]  [32 33 34]
+s_case_th = [114];  %[20 2 21 22 23 24] %[1 2 3 4 5 6 7 8]  [32 33 34]
 n_case = length(s_case_th);
 
 s_stv= zeros(1, n_case);
@@ -160,6 +160,12 @@ switch case_th
     load([res_dir,'result_IF_net_100_20_p[80,20]_sc=[0.006,0.006,0.006,0.006]_pr=0.24_ps=0.020_stv=0.50_t=1.00e+06.mat']);
   case 111 % C.5a
     load([res_dir,'result_IF_net_100_21_p[80,20]_sc=[0.006,0.006,0.006,0.006]_pr=0.24_ps=0.020_stv=0.50_t=1.00e+06.mat']);
+  case 112 % C.4c
+    load([res_dir,'result_IF_ST_net_100_20_p[80,20]_sc=[0.006,0.006,0.006,0.006]_pr=0.24_ps=0.020_stv=0.50_t=1.00e+06.mat']);
+  case 113 % C.5c
+    load([res_dir,'result_IF_ST_net_100_21_p[80,20]_sc=[0.006,0.006,0.006,0.006]_pr=0.24_ps=0.020_stv=0.50_t=1.00e+06.mat']);
+  case 114 % C.2c
+    load([res_dir,'result_IF_ST_net_100_21_p[80,20]_sc=[0.005,0.005,0.007,0.007]_pr=1.00_ps=0.012_stv=0.50_t=1.00e+06.mat']);
 
   otherwise
     error('no this case!');

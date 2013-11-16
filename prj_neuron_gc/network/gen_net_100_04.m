@@ -1,4 +1,4 @@
-% generate group network from simle network
+% generate big random netowrk, entries are normal distributed.
 
 netstr = 'net_100_04';
 
