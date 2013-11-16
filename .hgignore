@@ -1,11 +1,8 @@
 syntax:glob
 *~
 .*.swp
-pic_tmp
-data
-tags
-tmp_*.m
 *.o
-prj_nuft/data_scan_stv
-prj_nuft/pic
-prj_neuron_gc/pic_tmp
+tags
+data
+pic_tmp/
+prj_neuron_gc/pic_tmp/
