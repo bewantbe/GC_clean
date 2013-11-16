@@ -1,5 +1,0 @@
-% octave initialization file. (Project-specific)
-
-addpath('../GCcal');
-addpath('../experimental_tools');
-addpath('scan_worker');
