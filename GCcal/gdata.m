@@ -20,44 +20,44 @@
 function X = gdata(len, m, p, noisecov, A)
 %tic();
 if (exist('len', 'var') == 0)
-	len = 100;
+    len = 100;
 end
 if (exist('m','var') == 0)
-	m = 2;
+    m = 2;
 end
 if (exist('p','var') == 0)
-	p = 2;
+    p = 2;
 end
 if (exist('noisecov','var') == 0)
-	if (p==2)
-		noisecov = [1.0, 0.4; 0.4, 0.7];
-	end
-	if (p==3)
-		noisecov = diag([0.3 1.0 0.2]);
-	end
-	if (p==5)
-		noisecov = diag([0.6 0.5 0.3 0.3 0.6]);
-	end
+    if (p==2)
+        noisecov = [1.0, 0.4; 0.4, 0.7];
+    end
+    if (p==3)
+        noisecov = diag([0.3 1.0 0.2]);
+    end
+    if (p==5)
+        noisecov = diag([0.6 0.5 0.3 0.3 0.6]);
+    end
 end
 if (exist('A','var') == 0)
-	if (m==2 && p==2)
-		A = [-0.9 ,  0.0, 0.5, 0.0;
-		     -0.16, -0.8, 0.2, 0.5];
-	end
-	if (m==2 && p==3)
-		A = [-0.8  0.0 -0.4  0.5 -0.2  0.0;
-		      0.0 -0.9  0.0  0.0  0.8  0.0;
-		      0.0 -0.5 -0.5  0.0  0.0  0.2];
-	end
-	if (m==3 && p==5)
-		s2 = sqrt(2);
-		A = zeros(5, 5*3);
-		A(1,1) =-0.95*s2;  A(1,6) = 0.9025;
-		A(2,6) =-0.5;
-		A(3,11)= 0.4;
-		A(4,6) = 0.5;      A(4,4) =-0.25*s2;  A(4,5) =-0.25*s2;
-		A(5,4) = 0.25*s2;  A(5,5) =-0.25*s2;
-	end
+    if (m==2 && p==2)
+        A = [-0.9 ,  0.0, 0.5, 0.0;
+             -0.16, -0.8, 0.2, 0.5];
+    end
+    if (m==2 && p==3)
+        A = [-0.8  0.0 -0.4  0.5 -0.2  0.0;
+              0.0 -0.9  0.0  0.0  0.8  0.0;
+              0.0 -0.5 -0.5  0.0  0.0  0.2];
+    end
+    if (m==3 && p==5)
+        s2 = sqrt(2);
+        A = zeros(5, 5*3);
+        A(1,1) =-0.95*s2;  A(1,6) = 0.9025;
+        A(2,6) =-0.5;
+        A(3,11)= 0.4;
+        A(4,6) = 0.5;      A(4,4) =-0.25*s2;  A(4,5) =-0.25*s2;
+        A(5,4) = 0.25*s2;  A(5,5) =-0.25*s2;
+    end
 end
 extnum = 200;                           % wait for stable state
 len = len + extnum;
@@ -66,13 +66,13 @@ tf = chol(noisecov);                    % Compute the Cholesky factor
 Eps = tf' * randn(p, len);              % Noise terms
 X = zeros(p, len);                      % pre allocate memory
 for t = 1 : len
-	mmax = min(t-1, m);             % avoid X(t) out of range
-	X(:,t) = Eps(:,t);
-	for k = 1 : mmax
-		X(:,t) = X(:,t) - A(:, 1+p*(k-1):p+p*(k-1)) * X(:,t-k);
-	end
-	%X(:,t) = Eps(:,t);
-	%X(:,t)-= X()*;                  % $!#%$%$&%^*&^>(
+    mmax = min(t-1, m);             % avoid X(t) out of range
+    X(:,t) = Eps(:,t);
+    for k = 1 : mmax
+        X(:,t) = X(:,t) - A(:, 1+p*(k-1):p+p*(k-1)) * X(:,t-k);
+    end
+    %X(:,t) = Eps(:,t);
+    %X(:,t)-= X()*;                  % $!#%$%$&%^*&^>(
 end
 X(:,1:extnum) = [];
 %disp('cov matrix of noise term');
