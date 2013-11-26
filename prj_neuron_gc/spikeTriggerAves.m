@@ -10,7 +10,7 @@
 % [tg_ave_volt, s_rel_time] = spikeTriggerAve(1,2,ras,X, 200, 0.5);
 % plot(s_rel_time, tg_ave_volt, '-+');
 
-function [tg_ave, s_rel_time] = spikeTriggerAve(r, s, ras, X, ana_len, stv)
+function [tg_ave, s_rel_time] = spikeTriggerAves(r, s, ras, X, ana_len, stv)
 if (exist('ana_len','var')==0)
     ana_len = 200;         % length of analysis window
 end
@@ -27,12 +27,13 @@ end
 
 fire_index = round(ras(ras(:,1)==r, 2) / stv);
 % delete head and tail for safe
-len = size(X,2);
-fire_index(fire_index > len-s_rel_time(end) | fire_index <= -s_rel_time(1)) = [];
+fire_index(fire_index > size(X,2)-s_rel_time(end) | fire_index <= -s_rel_time(1)) = [];
 
+xs = X(s,:)';
 tg_ave = zeros(length(s), length(s_rel_time));
 for id_t0 = 1:length(s_rel_time)
-    tg_ave(:, id_t0) = mean(X(s, fire_index+s_rel_time(id_t0)), 2);
+    %tg_ave(:, id_t0) = mean(X(s, fire_index+s_rel_time(id_t0)), 2);  % slow
+    tg_ave(:, id_t0) = mean(xs(fire_index+s_rel_time(id_t0),:));
 end
 
 s_rel_time = s_rel_time*stv;  % convert to time unit
