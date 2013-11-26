@@ -56,8 +56,10 @@ for id_scee=1:length(s_scee)
 % prepare parallel
 s_b_finished = false(length(s_stv), length(s_ps), length(s_prps));
 s_b_launched = false(length(s_stv), length(s_ps), length(s_prps));
-[~, ncpu] = system('nproc');         % get number of cpus
-ncpu = max([str2num(ncpu), 1]);      % or leave one for other job?
+if ~exist('ncpu','var')
+  [~, ncpu] = system('nproc');         % get number of cpus
+  ncpu = max([str2num(ncpu), 1]);      % or leave one for other job?
+end
 while any(~s_b_finished(:))
  id_parallel = 0;
  goto_to_while_loop = false;
@@ -107,7 +109,7 @@ for id_stv=1:length(s_stv)
     end
   end
 
-  [oGC, oDe, R] = AnalyseSeries(X, s_od);
+  [oGC, oDe, R] = AnalyseSeriesFast(X, s_od);
 
   prps_ps_stv_oGC(:,:,:, id_prps, id_ps, id_stv) = oGC;
   prps_ps_stv_oDe(:,:,:, id_prps, id_ps, id_stv) = oDe;
