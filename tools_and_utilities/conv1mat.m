@@ -9,7 +9,7 @@ end
 
 p = size(A,1);
 m = round(size(A,2)/p);
-AA = zeros(p,p,(m+1)*p);
+AA = zeros(p,p,m+1);
 AA(:,:,1) = eye(p);
 for k=1:m
     AA(:,:,k+1) = A(:, 1+(k-1)*p:k*p);
@@ -17,7 +17,7 @@ end
 A = AA;
 
 m = round(size(B,2)/p);
-BB = zeros(p,p,(m+1)*p);
+BB = zeros(p,p,m+1);
 BB(:,:,1) = eye(p);
 for k=1:m
     BB(:,:,k+1) = B(:, 1+(k-1)*p:k*p);

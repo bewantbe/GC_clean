@@ -3,7 +3,7 @@
 % much stable than pos_nGrangerT and pos_nGrangerT2
 % but cost much more memory and more time to calculate
 
-function [GC, Deps, Aall] = pos_nGrangerT3(X, m)
+function [GC, Deps, Aall] = pos_nGrangerT_qr(X, m)
 if (nargin ~= 2 && nargin ~= 3)
     error('Usage: [GC, Deps] = nGrangerT3(X, m)');
 end

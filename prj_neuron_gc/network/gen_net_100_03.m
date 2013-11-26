@@ -8,6 +8,7 @@ p=100;
 nnet = rand(p,p)<prob_one;
 nnet(eye(p)==1) = 0;
 
+rande('state', 3);          % now the network is totally fixed
 nnet = nnet .* rande(p);
 fd = fopen([netstr,'.txt'],'w');
 nnet = num2str(nnet);
