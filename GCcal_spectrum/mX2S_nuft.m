@@ -16,7 +16,6 @@ if exist('fftlen','var') == 0
 end
 fqs = ifftshift((0:fftlen-1)-floor(fftlen/2));
 
-desired_accuracy = 6;
 aveS = zeros(fftlen,p,p);
 S    = zeros(fftlen,p,p);
 Jk   = zeros(fftlen, p);

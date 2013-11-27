@@ -39,7 +39,7 @@ function [mX, mT] = SampleNonUnif(uX, mlen, slen, smode, more_trials)
       T   = repmat((1:dt:mlen)', [1, n_trials]);
       mT = floor(T + dt*rand(slen, n_trials));
     otherwise
-      error("Unsupported resample mode");
+      error('Unsupported resample mode');
   end
   mX = zeros(p,slen,n_trials);
   for tr=1:n_trials
