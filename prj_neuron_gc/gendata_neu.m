@@ -74,12 +74,17 @@ else
     end
 end
 
+if filesep == '\'
+    fs = '\';          % in M$ windows
+else
+    fs = '/';
+end
 pathdir = fileparts(mfilename('fullpath'));
 if isempty(netstr)
     matname = '-';
     neu_network = [1];
 else
-    matname = [pathdir, '/network/', netstr, '.txt'];
+    matname = [pathdir, fs, 'network', fs, netstr, '.txt'];
     neu_network = load('-ascii', matname);
 end
 p = size(neu_network, 1);
@@ -97,15 +102,10 @@ else
         error('number of neurons does not match the network!');
     end
 end
-if filesep == '\'
-    fs = '\\';          % in M$ windows
-else
-    fs = '/';
-end
 if ~exist('data_dir_prefix', 'var')
-    data_dir_prefix = ['data', '/'];
+    data_dir_prefix = ['data', fs];
 end
-file_prefix = [pwd(), '/', data_dir_prefix];   % force current dir
+file_prefix = [pwd(), fs, data_dir_prefix];   % force current dir
 if use_exp_IF
     file_prefix = [file_prefix, 'EIF_'];
 end
