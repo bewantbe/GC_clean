@@ -6,14 +6,16 @@
 %scee = 0.02;     % cortical strength
 %pr = 1;          % poisson input rate
 %ps = 0.012;      % poisson input strength
-%simu_time = 5e6;
+%simu_time = 1e5;
 %stv = 0.5;
 %dt = 1/128;
 % and use RC filter
 % call this function like:
-%  [X, ISI, ras] = gendata_neu('net_2_2', 0.02, 1, 0.012, 5e6, 0.5, '-dt 0.0078125 --RC-filter');
+%  [X, ISI, ras] = gendata_neu('net_2_2', 0.02, 1, 0.012, 1e5, 0.5, '-dt 0.0078125 --RC-filter');
 % If you want a new experiment, run
 %  change '-dt 0.0078125 --RC-filter' to 'new -dt 0.0078125 --RC-filter'
+
+% note: the parameter extpara may have security hole -- to excute arbitrary shell command
 
 function [X, ISI, ras] = gendata_neu(netstr, scee, pr, ps, simu_time, stv, extpara, data_dir_prefix)
 if (exist('stv', 'var')==0)
@@ -105,7 +107,7 @@ end
 if ~exist('data_dir_prefix', 'var')
     data_dir_prefix = ['data', fs];
 end
-file_prefix = [pwd(), fs, data_dir_prefix];   % force current dir
+file_prefix = data_dir_prefix;  % give user the full power to set directory
 if use_exp_IF
     file_prefix = [file_prefix, 'EIF_'];
 end
