@@ -30,10 +30,10 @@ mode_run_in_background = false;
 if (exist('extpara','var')==0)
     extpara = '';
 else
-    if strcmpi(extpara(1:2), 'rm') == 1
+    if (length(extpara)>=2) && (1==strcmpi(extpara(1:2), 'rm'))
         mode_rm_only = true;         % remove the output files then exit
     end
-    if strcmpi(extpara(1:4), 'read') == 1
+    if (length(extpara)>=4) && (1==strcmpi(extpara(1:4), 'read'))
         mode_read_only = true;
     end
     if (length(extpara)>=3) && (1==strcmpi(extpara(1:3),'new'))
@@ -69,7 +69,7 @@ else
         pI = -1;
     end
     s_tmp = strtrim(extpara);
-    if strcmp(s_tmp(end), '&') == 1
+    if ~isempty(s_tmp) && strcmp(s_tmp(end), '&') == 1
         mode_run_in_background = true;
     end
 end
@@ -131,19 +131,19 @@ end
 if (exist(output_RAS_name, 'file') == 0 || new_run) && ~mode_read_only
 %    static_param = 'raster_tuning -ng -v --bin-save';     % if you are using M$ Windows
     if use_exp_IF
-        static_param = [pathdir, fs, 'raster_tuning_expIF -ng -v --bin-save -inf -'];
+        static_param = ['"',pathdir, fs, 'raster_tuning_expIF" -ng -v --bin-save -inf -'];
     else
         if use_common_poisson
-            static_param = [pathdir, fs, 'raster_tuning_co -ng -v --bin-save -inf -'];
+            static_param = ['"',pathdir, fs, 'raster_tuning_co" -ng -v --bin-save -inf -'];
         else
-            static_param = [pathdir, fs, 'raster_tuning -ng -v --bin-save -inf -'];
+            static_param = ['"',pathdir, fs, 'raster_tuning" -ng -v --bin-save -inf -'];
         end
     end
     if length(scee)==1 && pI==-1
-        cmdst = sprintf('%s -n %d -t %.16e -mat %s -pr %.16e -ps %.16e -scee %.16e --save-interval %.16e -o "%s" --save-spike-interval "%s" --save-spike "%s"', ...
+        cmdst = sprintf('%s -n %d -t %.16e -mat "%s" -pr %.16e -ps %.16e -scee %.16e --save-interval %.16e -o "%s" --save-spike-interval "%s" --save-spike "%s"', ...
                 static_param, p, simu_time, matname, pr, ps, scee, stv, output_name, output_ISI_name, output_RAS_name);
     else
-        cmdst = sprintf('%s -n %d %d -t %.16e -mat %s -pr %.16e -ps %.16e -scee %.16e -scei %.16e -scie %.16e -scii %.16e --save-interval %.16e -o "%s" --save-spike-interval "%s" --save-spike "%s"', ...
+        cmdst = sprintf('%s -n %d %d -t %.16e -mat "%s" -pr %.16e -ps %.16e -scee %.16e -scei %.16e -scie %.16e -scii %.16e --save-interval %.16e -o "%s" --save-spike-interval "%s" --save-spike "%s"', ...
                 static_param, pE, pI, simu_time, matname, pr, ps, scee(1), scee(2), scee(3), scee(4), stv, output_name, output_ISI_name, output_RAS_name);
     end
 %disp([cmdst, ' ', extpara]);  fflush(stdout);   % for debug
