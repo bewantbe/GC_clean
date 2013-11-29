@@ -117,27 +117,20 @@ if exist('k', 'var') && ~exist('od_full','var')  % if we failed in Levinson
   od_max = min([2*k+10, od_max]);
   warning(sprintf('chooseOrderAuto: od_max set to %d. Specify the order explicitly if you want something different.', od_max));
 end
-%covz = getcovzpd(X, od_max);
 s_xic_val = [];
 s_lndet_de = [];
 for k = 1:od_max
   covz = getcovzpd(X, k);
   [~, De] = ARregressionpd(covz, p);
-  %[~, De] = ARregressionpd(covz(1:(k+1)*p, 1:(k+1)*p), p);
   try
     logdet_de = logdet(De);
-    b_non_SPD = false;
+    s_lndet_de = [s_lndet_de, logdet_de]; 
+    s_xic_val = [s_xic_val, fxic(s_lndet_de(end),k)];
   catch
-    b_non_SPD = true;
-  end
-  if b_non_SPD
     s_lndet_de = [s_lndet_de, -Inf(1, od_max-k+1)]; 
     s_xic_val = [s_xic_val, -Inf(1, od_max-k+1)];
     warning('chooseOrderAuto: A really hard problem... Returning -Inf (BIC value). You may try pos_nGrangerT_qr() yourself, and that''s the last hope as far as I know.');
     break;
-  else
-    s_lndet_de = [s_lndet_de, logdet_de]; 
-    s_xic_val = [s_xic_val, fxic(s_lndet_de(end),k)];
   end
 end
 [xic_min, xic_od] = min(s_xic_val);  % first minimum one will be returned
