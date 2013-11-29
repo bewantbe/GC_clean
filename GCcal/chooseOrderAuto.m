@@ -33,6 +33,7 @@ end
 
 if ~b_lack_accuracy  % high accuracy is not requested, so try Levinson first
   %disp('Trying Levinson...');
+  X_bk = X;
   X = bsxfun(@minus, X, mean(X,2));
   Rxy0 = (X(:, od_max+1:len) * X(:, od_max-0+1:len-0)') / (len-od_max);
   Rxy1 = (X(:, od_max+1:len) * X(:, od_max-1+1:len-1)') / (len-od_max);
@@ -66,24 +67,32 @@ if ~b_lack_accuracy  % high accuracy is not requested, so try Levinson first
     df = df - eb * gf;
     db = db - ef * gb;
 
+    try
+      logdet_de = logdet(df);
+      b_non_SPD = false;
+    catch
+      b_non_SPD = true;
+    end
     % in case of high condition number, try the slow but accurate method
-    if any(diag(lu(df))<=0) || min(diag(df)./diag_Rxy0) < sqrt(0.5/len)
+    if b_non_SPD || min(diag(df)./diag_Rxy0) < sqrt(0.5/len)
       b_lack_accuracy = true;
       %min(diag(df)./diag_Rxy0)
       %diag(df)./diag_Rxy0
       warning('chooseOrderAuto: lack of accuracy, trying SPD covz ...');
+      X = X_bk;
+      clear('X_bk');
       break;
     end
-    s_lndet_de = [s_lndet_de, logdet(df)]; 
+    s_lndet_de = [s_lndet_de, logdet_de]; 
     xic_tmp = fxic(s_lndet_de(end),k);
     s_xic_val = [s_xic_val, xic_tmp];
-    % judge best order
+    % record best order
     if xic_min > xic_tmp
       xic_min = xic_tmp;
       xic_od  = k;
     end
     if ~exist('od_full','var')
-      % try some more fit, to make sure it's minimum (may fail in extreme case)
+      % try some more fit, to make sure it is minimum(may fail in extreme case)
       if (xic_tmp_old < xic_tmp)
         mono_len = mono_len + 1;
         if mono_len >= 10
@@ -104,19 +113,37 @@ if ~b_lack_accuracy
 end
 
 %disp('Using covz version...');
-s_xic_val = [];
-s_lndet_de = [];
 if exist('k', 'var') && ~exist('od_full','var')  % if we failed in Levinson
   od_max = min([2*k+10, od_max]);
   warning(sprintf('chooseOrderAuto: od_max set to %d. Specify the order explicitly if you want something different.', od_max));
 end
-covz = getcovzpd(X, od_max);
+%covz = getcovzpd(X, od_max);
+s_xic_val = [];
+s_lndet_de = [];
 for k = 1:od_max
-  [~, De] = ARregressionpd(covz(end-(k+1)*p+1:end, end-(k+1)*p+1:end), p);
-  s_lndet_de = [s_lndet_de, logdet(De)]; 
-  xic_tmp = fxic(s_lndet_de(end),k);
-  s_xic_val = [s_xic_val, xic_tmp];
+  covz = getcovzpd(X, k);
+  [~, De] = ARregressionpd(covz, p);
+  %[~, De] = ARregressionpd(covz(1:(k+1)*p, 1:(k+1)*p), p);
+  try
+    logdet_de = logdet(De);
+    b_non_SPD = false;
+  catch
+    b_non_SPD = true;
+  end
+  if b_non_SPD
+    s_lndet_de = [s_lndet_de, -Inf(1, od_max-k+1)]; 
+    s_xic_val = [s_xic_val, -Inf(1, od_max-k+1)];
+    warning('chooseOrderAuto: A really hard problem... Returning -Inf (BIC value). You may try pos_nGrangerT_qr() yourself, and that''s the last hope as far as I know.');
+    break;
+  else
+    s_lndet_de = [s_lndet_de, logdet_de]; 
+    s_xic_val = [s_xic_val, fxic(s_lndet_de(end),k)];
+  end
 end
-[xic_min, xic_od] = min(s_xic_val);
+[xic_min, xic_od] = min(s_xic_val);  % first minimum one will be returned
+[~, n_non_dec] = find(diff(s_lndet_de)>0, 1);
+if ~isempty(n_non_dec)
+  [xic_min, xic_od] = min(s_xic_val(1:n_non_dec));  % should be a better guess
+end
 
 end
