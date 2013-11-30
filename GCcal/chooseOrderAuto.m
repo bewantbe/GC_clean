@@ -74,11 +74,11 @@ if ~b_lack_accuracy  % high accuracy is not requested, so try Levinson first
       b_non_SPD = true;
     end
     % in case of high condition number, try the slow but accurate method
-    if b_non_SPD || min(diag(df)./diag_Rxy0) < sqrt(0.5/len)
+    if b_non_SPD || min(diag(df)./diag_Rxy0) < 0.1*sqrt(0.5/len)
       b_lack_accuracy = true;
       %min(diag(df)./diag_Rxy0)
       %diag(df)./diag_Rxy0
-      warning('chooseOrderAuto: lack of accuracy, trying SPD covz ...');
+      warning(sprintf('chooseOrderAuto: lack of accuracy (at order %d), trying SPD covz ...', k));
       X = X_bk;
       clear('X_bk');
       break;
@@ -119,8 +119,12 @@ if exist('k', 'var') && ~exist('od_full','var')  % if we failed in Levinson
 end
 s_xic_val = [];
 s_lndet_de = [];
+R = getcovpd(X, od_max);
+X = bsxfun(@minus, X, mean(X,2));
 for k = 1:od_max
-  covz = getcovzpd(X, k);
+  covz = getcovzFromRpd(X, R, k);
+  %covz2 = getcovzpd(X, k);
+  %max(abs(covz-covz2)(:)) / max(abs(covz2(:)))  % test accuracy
   [~, De] = ARregressionpd(covz, p);
   try
     logdet_de = logdet(De);
