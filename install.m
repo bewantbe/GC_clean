@@ -1,4 +1,5 @@
 % Compile all Matlab mex files used in this project
+% You should have a compiler that support C++11
 
 GC_CAL_HOME = fileparts(mfilename('fullpath'));
 
@@ -28,12 +29,12 @@ if is_octave
   common_cmd_prefix = 'CXXFLAGS="-O3 -march=native -fopenmp -std=c++11"  LDFLAGS="-march=native -fopenmp" mkoctfile ';
   system([common_cmd_prefix,'--mex -o gendata_linear gendata_linear_v4_mex.cpp']);
   system([common_cmd_prefix,'--mex getcovzpdhded.cpp']);
-  system([common_cmd_prefix,'--mex -o MAfilter MAfilter_v5.cpp']);
+  system([common_cmd_prefix,'-o MAfilter MAfilter_v5.cpp']);
 else
   common_cmd_prefix = ['mex CXXFLAGS="\$CXXFLAGS -std=c++11 -I',dir_lib_ext,'" CXXOPTIMFLAGS="-O3 -march=native" '];
   eval([common_cmd_prefix, 'gendata_linear_v4_mex.cpp -output gendata_linear']);
   eval([common_cmd_prefix, 'getcovzpdhded.cpp']);
-  eval([common_cmd_prefix, 'MAfilter_v5.cpp -output MAfilter']);
+  eval([common_cmd_prefix, 'MAfilter_v5_mex.cpp -output MAfilter']);
 end
 
 cd([GC_CAL_HOME,'/GCcal_spectrum']);

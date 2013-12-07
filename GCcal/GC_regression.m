@@ -44,7 +44,7 @@ if p==1
     end
   end
 else
-  rd = MAfilter_v5(A, X);
+  rd = MAfilter(A, X);
 end
 
 X = bsxfun(@plus, X, aveX);
