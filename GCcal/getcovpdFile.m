@@ -21,9 +21,15 @@ end
 if ~exist(XF, 'file')
   error('File not found.');
 end
-d = stat(XF);
-f_len = round(d.size/8/p);
-if abs(f_len*p*8-d.size)>0.5
+if exist('OCTAVE_VERSION','builtin')
+  d = stat(XF);
+  fsize = d.size;
+else
+  d = dir(XF);
+  fsize = d.bytes;
+end
+f_len = round(fsize/8/p);
+if abs(f_len*p*8-fsize)>0.5
   error('Data file size does not compatible with len and p');
 end
 if ~exist('x_skip', 'var')

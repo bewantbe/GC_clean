@@ -31,12 +31,12 @@ if (p == 1)
 end
 
 Depsj = zeros(p-1, p);        % echo column corresponding to a excluded variate
-idx = true(1, m*p);           % the index of lines we want to solve
+idx = true(m*p, 1);           % the index of lines we want to solve
 idx(1:p:m*p) = false;
 for k = 1 : p
     Acj = -(X(idx(1:p), m+1:len) / Z(idx, :));     % solve p-1 variates regression
     Depsj(:, k) = diag(fcov0(X(idx(1:p), m+1:len) + Acj*Z(idx, :)));
-    idx = shift(idx,1);
+    idx = circshift(idx,1);
 end
 
 GC = zeros(p,p);
