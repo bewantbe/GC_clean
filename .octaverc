@@ -1,13 +1,13 @@
 % octave initialization file. (Project-specific)
 
-ph = fileparts(mfilename('fullpath'));
+GC_CAL_HOME = fileparts(mfilename('fullpath'));
 
-addpath(ph);
-addpath([ph,'/GCcal']);
-addpath([ph,'/GCcal_spectrum']);
-addpath([ph,'/tools_and_utilities']);
-addpath([ph,'/prj_neuron_gc']);
-addpath([ph,'/prj_neuron_gc/scan_worker_template']);
+addpath(GC_CAL_HOME);
+addpath([GC_CAL_HOME,'/GCcal']);
+addpath([GC_CAL_HOME,'/GCcal_spectrum']);
+addpath([GC_CAL_HOME,'/tools_and_utilities']);
+addpath([GC_CAL_HOME,'/prj_neuron_gc']);
+addpath([GC_CAL_HOME,'/prj_neuron_gc/scan_worker_template']);
 
 disp('GC calculation packages loaded.');
 disp(' ');
