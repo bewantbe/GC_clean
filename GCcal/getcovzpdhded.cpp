@@ -1,7 +1,11 @@
-// copy from prj_GC_clean/test_code
-// mex getcovpdhded.cpp
-//In octave
-// CXXFLAGS='-O3 -march=native -fopenmp -std=c++11'  LDFLAGS='-march=native -fopenmp' mkoctfile --mex getcovpdhded.cpp
+// Copy from prj_GC_clean/test_code
+// Compile under Matlab:
+//   Windows:
+//     mex COMPFLAGS="$COMPFLAGS -std=c++11" -n getcovzpdhded.cpp
+//   UNIX-like:
+//     mex CXXFLAGS="\$CXXFLAGS -std=c++11" CXXOPTIMFLAGS="-O3 -march=native" getcovzpdhded.cpp
+// In octave
+//   CXXFLAGS='-O3 -march=native -fopenmp -std=c++11'  LDFLAGS='-march=native -fopenmp' mkoctfile --mex getcovzpdhded.cpp
 #include <mex.h>
 
 #define EIGEN_NO_DEBUG
