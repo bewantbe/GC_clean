@@ -1,11 +1,12 @@
 // port gendata_linear_v4.cpp to matlab
+// You should have Eigen installed
 // Compile under Matlab:
-//   Windows:
-//     mex COMPFLAGS="$COMPFLAGS -std=c++11" -n gendata_linear_v4_mex.cpp
+//   Windows (Assume using MSVC as default compiler):
+//     mex COMPFLAGS="$COMPFLAGS /fopenmp" LINKFLAGS="$LINKFLAGS /fopenmp" gendata_linear_v4_mex.cpp -output gendata_linear
 //   UNIX-like:
-//     mex CXXFLAGS="\$CXXFLAGS -std=c++11" CXXOPTIMFLAGS="-O3 -march=native" gendata_linear_v4_mex.cpp -output gendata_linear
+//     mex CXXFLAGS="\$CXXFLAGS -std=c++11" CXXOPTIMFLAGS="-O3 -march=native -fopenmp"  LDFLAGS="\$LDFLAGS -fopenmp" gendata_linear_v4_mex.cpp -output gendata_linear
 // Compile under Octave (at shell command window):
-//   CXXFLAGS='-O3 -march=native -fopenmp -std=c++11'  LDFLAGS='-march=native -fopenmp' mkoctfile --mex gendata_linear_v4_mex.cpp
+//   CXXFLAGS='-O3 -march=native -fopenmp -std=c++11' LDFLAGS='-march=native -fopenmp' mkoctfile --mex gendata_linear_v4_mex.cpp
 #include <mex.h>
 
 #ifndef M_PI
@@ -13,18 +14,13 @@
 #endif
 
 // for random number
-#include <time.h>      // for time()
-#include <sys/time.h>  // for gettimeofday()
-unsigned int GetSeedFromTime()
+#include <random>
+unsigned long GetRndSeed()
 {
-  struct timeval tv;
-  if (gettimeofday(&tv, NULL) != 0) {
-    tv.tv_sec = time(NULL);
-  }
-  return (unsigned int)(tv.tv_sec*1000000 + tv.tv_usec);
+  std::random_device rd;
+  return rd();
 }
 
-#include <random>
 std::mt19937 eng;
 std::normal_distribution<double> ran_gaussian;
 
@@ -61,7 +57,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs,
     }
   }
 
-  int rng_seed = GetSeedFromTime();
+  unsigned long rng_seed = GetRndSeed();
   if (nrhs == 4) {
     rng_seed = (int)mxGetScalar(prhs[3]);
   }
