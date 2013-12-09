@@ -1,6 +1,6 @@
 % Compile all Matlab mex/Octave oct files used in this project
 % You should have a compiler that support C++11
-% Here assume you are using GCC or a GCC compatible compiler
+% Here assume you are using GCC or a GCC compatible compiler under unix-like system or using MSVC under Windows.
 
 GC_CAL_HOME = fileparts(mfilename('fullpath'));
 
@@ -52,7 +52,7 @@ if is_linux
       mex isFileLocked.cpp
     end
 else
-    % assume you are using MSVC  /openmp
+    % In Windows. Assume you are using MSVC (>=2010)
     cd([GC_CAL_HOME,'/GCcal']);
     common_cmd_prefix = ['mex COMPFLAGS="$COMPFLAGS /I ',dir_lib_ext,'" OPTIMFLAGS="$OPTIMFLAGS /fopenmp" LINKFLAGS="$LINKFLAGS /fopenmp" '];
     eval([common_cmd_prefix, 'gendata_linear_v4_mex.cpp -output gendata_linear']);
@@ -64,6 +64,9 @@ else
     mex lowest_smooth_number_exact.cpp
     mex lowest_smooth_number_fast.cpp
 end
+
+cd(GC_CAL_HOME);
+
 % tip(in unix-like): use
 %   find -path './.hg' -prune -o \( -name '*.oct' -o -name '*.mex*' \) -print
 % to find all compiled files
