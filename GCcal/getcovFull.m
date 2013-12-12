@@ -4,7 +4,7 @@
 % or
 %   cov_full = getcovFull(R);
 
-function cov_full = getcovFull(X, m)
+function [cov_full, idt] = getcovFull(X, m)
 if ~exist('m', 'var')
   % only covariance is porvided
   R = X;
@@ -14,3 +14,4 @@ end
 p = size(X,1);
 m3R = reshape(R,p,p,[]);
 cov_full = cat(3,flipdim(m3R(:,:,2:end),3),m3R);
+idt = 1-size(m3R) : size(m3R);
