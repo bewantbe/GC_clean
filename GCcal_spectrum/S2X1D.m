@@ -10,6 +10,6 @@ function [X, de] = S2X1D(S)
     de= NaN;
     return;
   end
-  X  = exp(hilbert(0.5*log(S)));
+  X  = exp(conj(hilbert(0.5*log(S))));
   de = abs(mean(X))^2;
 end
