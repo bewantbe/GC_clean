@@ -12,6 +12,16 @@ int mod(int a, int m)
   return (b<0) ? m+b : b;
 }
 
+// Calculate Gaussian spread at time T[j+k*N] with strength X[j+k*N]
+// j=0..N, k=0..p-1, there are p trials, length of each trial is N.
+ 
+// Limitation:
+//   Range of T should within [0, 2*pi]
+//   subscripts range of X(N*p), T(N*p) and return value(M_r*p)
+//     should smaller than MAX_INT (usually 2^31-1 = 2147483647)
+//   M_sp  < sqrt(MAX_INT)
+//   M_r   < sqrt(MAX_INT)
+
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs,
                  const mxArray *prhs[])
 {
@@ -31,6 +41,9 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs,
   double *f_r = mxGetPr(plhs[0]);
 
   double *exp3 = (double*)malloc((M_sp+1)*sizeof(double));
+  if (exp3==NULL) {
+    mexErrMsgTxt("GaussianConvGrid: no enough memory! (fail to malloc)");
+  }
   for (int l=0; l<=M_sp; l++) {
     exp3[l] = exp(-l*l*(M_PI*M_PI)/(M_r*M_r)/tau);
   }
@@ -41,7 +54,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs,
       double exp1 = exp(-tj*tj/4/tau);
       double exp20= exp(tj*M_PI/M_r/tau);
       double exp2 = 1;
-      f_r[id + k*M_r] += exp1 * X[j+k*N];
+      f_r[mod(id,M_r) + k*M_r] += exp1 * X[j+k*N];
       for (int l=1; l<=M_sp; l++) {           // spread Gaussian loop
         double tmp = exp1 * exp3[l] * X[j+k*N];
         exp2 *= exp20;

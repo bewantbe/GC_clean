@@ -14,13 +14,14 @@ if ~exist('stv', 'var') || isempty(stv)
   stv = 0.5;
 end
 
-if ~cal_mode
+switch cal_mode
+case 0
   acce_index = round(ras(ras(:,1)==neuron_id, 2) / stv);
   acce_index(acce_index >= len-bound_ignore | acce_index <= bound_ignore) = [];
   fr_cnt = length(acce_index);
   st = zeros(1,len);
   st(acce_index') = 1;
-else  % 40% slower
+case 1  % 40% slower
   fire_id = ras(ras(:,1)==neuron_id, 2) / stv;   % exact fire time id
   acce_index = floor(fire_id);
   id_ignore = acce_index >= len-bound_ignore | acce_index <= bound_ignore;
@@ -30,6 +31,8 @@ else  % 40% slower
   st = zeros(1,len);
   st(acce_index') = 1-fire_id;
   st(1+acce_index') = fire_id;
+otherwise
+  error('no this case');
 end
 
 end
