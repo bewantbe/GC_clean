@@ -4,7 +4,7 @@
 % currently no window function applied
 % does not subtract mean value from original data
 
-function aveS = mX2S_mt(mX, fftlen, halfbandwidth, n_taper)
+function [aveS fqs] = mX2S_mt(mX, fftlen, halfbandwidth, n_taper)
 
 % for compatibility of origninal non-parametric code
 %[p, n_trials, len] = size(mX);
@@ -20,6 +20,7 @@ if ~exist('fftlen','var')
 %  fftlen = 2^(nextpow2(len)+1);
   fftlen = len;
 end
+fqs = ifftshift((0:fftlen-1)-floor(fftlen/2));
 
 % Use DPSS tapers (also called Slepian sequences)
 % in order to maximize the energy concentration in the main lobe

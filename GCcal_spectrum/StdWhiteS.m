@@ -6,8 +6,8 @@ if size(S,2)~=size(S,3)
   error('S shoule be fftlen*p*p matrix');
 end
 
-[X, de11] = S2X1D(S(:,1,1));
-[Y, de22] = S2X1D(S(:,2,2));
+[X, de11] = S2X1D(real(S(:,1,1)));
+[Y, de22] = S2X1D(real(S(:,2,2)));
 
 S3 = zeros(size(S));
 %S3(:,1,1) = 1;

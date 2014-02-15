@@ -7,7 +7,7 @@ if size(S,2)~=size(S,3)
   error('S shoule be fftlen*p*p matrix');
 end
 if ~exist('ext_od','var')
-  ext_od = 30;
+  ext_od = 50;
 end
 
 [S3, de11, de22] = StdWhiteS(S);
