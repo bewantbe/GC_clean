@@ -1,6 +1,6 @@
 % get structure from name of the network
 
-function network = getnetwork(netstr)
+function [network, matname] = getnetwork(netstr)
 
 pathdir = fileparts(mfilename('fullpath'));
 if isempty(netstr)
