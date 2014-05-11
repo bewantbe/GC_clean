@@ -1,7 +1,5 @@
 % Startup file for user-defined options
 
-function startup()
-global GC_CAL_HOME
 GC_CAL_HOME = fileparts(mfilename('fullpath'));
 
 addpath(GC_CAL_HOME);
@@ -57,3 +55,5 @@ for id_f=1:length(cppfiles)
     break;
   end
 end
+
+clear('cppfiles', 'dmex', 'mexfiles', 'path_mex', 'path_cpp', 'id_f', 'dcpp', 'ans');
