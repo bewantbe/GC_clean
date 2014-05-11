@@ -1,5 +1,7 @@
 % Startup file for user-defined options
 
+function startup()
+global GC_CAL_HOME
 GC_CAL_HOME = fileparts(mfilename('fullpath'));
 
 addpath(GC_CAL_HOME);
