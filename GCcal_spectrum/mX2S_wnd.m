@@ -74,6 +74,9 @@ end
 aveS = aveS / (n_trials * n_slice * (wnd'*wnd));
 
 if nargout==3
+  winfo.n_trials = n_trials;
+  winfo.n_slices = n_slice * n_trials;
+  winfo.n_overlap = fftlen - step_size;
   winfo.rel_error = 1/sqrt(n_trials*n_slice); % standard variance / amplitude
   fprintf('relative error = %.2f dB\n', 10*log10(1+2*2*winfo.rel_error));
 end

@@ -78,6 +78,10 @@ aveS = aveS / n_trials / n_slice;
 fqs = ifftshift((0:fftlen-1)-floor(fftlen/2))'/fftlen;
 
 if nargout==3
+  winfo.n_trials = n_trials;
+  winfo.n_slices = n_slice * n_trials;
+  winfo.n_overlap = fftlen - step_size;
   winfo.rel_error = 1/sqrt(n_trials*n_slice*n_taper);  % standard variance / amplitude
-  fprintf('relative error(mt) = %.2f dB\n', 10*log10(1+2*2*winfo.rel_error));
+  fprintf('relative error(mt) = %.2f dB, band width = %f Hz\n',...
+          10*log10(1+2*2*winfo.rel_error), 2*nHBW/fftlen);
 end
