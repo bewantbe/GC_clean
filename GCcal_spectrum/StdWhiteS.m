@@ -1,21 +1,31 @@
-% Help calculate GC from spectrum
-% S is p*p*fftlen matrix
+% Whiten the auto spectrum of each variable
 
-function [S3, de11, de22] = StdWhiteS(S)
+function WS = StdWhiteS(S)
 if size(S,2)~=size(S,3)
   error('S shoule be fftlen*p*p matrix');
 end
 
-[X, de11] = S2X1D(real(S(:,1,1)));
-[Y, de22] = S2X1D(real(S(:,2,2)));
+p   = size(S,2);
+len = size(S,1);
+X = zeros(len, p);
+for k=1:p
+  X(:,k) = S2X1D(real(S(:,k,k)));
+end
 
-S3 = zeros(size(S));
-%S3(:,1,1) = 1;
-%S3(:,1,2) = (1./X) .* squeeze(S(:,1,2)) .* conj(1./Y);
-%S3(:,2,1) = (1./Y) .* squeeze(S(:,2,1)) .* conj(1./X);
-%S3(:,2,2) = 1;
+WS = zeros(size(S));
+for k1=1:p
+  % later, we may ignore WS(:, k, k) part
+  for k2=1:p
+    WS(:, k1, k2) = (1./X(:,k1)) .* S(:, k1, k2) .* conj(1./X(:,k2));
+  end
+end
 
-S3(:,1,1) = real((1./X) .* S(:,1,1) .* conj(1./X));
-S3(:,1,2) = (1./X) .* S(:,1,2) .* conj(1./Y);
-S3(:,2,1) = (1./Y) .* S(:,2,1) .* conj(1./X);
-S3(:,2,2) = real((1./Y) .* S(:,2,2) .* conj(1./Y));
+% ensure absolute real number
+for k=1:p
+  WS(:, k, k) = real(WS(:, k, k));
+end
+
+%WS(:,1,1) = real((1./X) .* S(:,1,1) .* conj(1./X));
+%WS(:,1,2) = (1./X) .* S(:,1,2) .* conj(1./Y);
+%WS(:,2,1) = (1./Y) .* S(:,2,1) .* conj(1./X);
+%WS(:,2,2) = real((1./Y) .* S(:,2,2) .* conj(1./Y));

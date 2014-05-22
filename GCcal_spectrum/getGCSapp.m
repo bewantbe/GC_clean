@@ -9,10 +9,15 @@ end
 if ~exist('ext_od','var')
   ext_od = 50;
 end
+od = min(floor(size(S,1)/2), ext_od);
 
-[S3, de11, de22] = StdWhiteS(S);
-covxy_f_app0 = real(ifft(S3(:,1,2)));
-od = min(floor(size(S3,1)/2), ext_od);
-gc_app = zeros(2,2);
-gc_app(1,2) = sum(covxy_f_app0(2:od+1).^2);
-gc_app(2,1) = sum(covxy_f_app0(end-od:end).^2);
+p = size(S,2);
+WS = nStdWhiteS(S);
+for k1=1:p
+  gc_app(k1,k1) = 0;
+  for k2=k1+1:p
+    covxy_f = real(ifft(WS(:,k1,k2)));
+    gc_app(k1,k2) = sum(covxy_f(2:od+1).^2);
+    gc_app(k2,k1) = sum(covxy_f(end-od:end).^2);
+  end
+end
