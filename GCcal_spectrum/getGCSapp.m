@@ -12,7 +12,7 @@ end
 od = min(floor(size(S,1)/2), ext_od);
 
 p = size(S,2);
-WS = nStdWhiteS(S);
+WS = StdWhiteS(S);
 for k1=1:p
   gc_app(k1,k1) = 0;
   for k2=k1+1:p
