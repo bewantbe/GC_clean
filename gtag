@@ -1,4 +1,5 @@
 #!/bin/bash
 
+# generate ctags file for vim
 ctags --exclude='extern_lib' -R ./
-ctags -a /home/xyy/matcode/libs
+ctags -a $HOME/matcode/libs
