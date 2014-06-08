@@ -1,5 +1,6 @@
 % Startup file for user-defined options
 
 addpath('../GCcal');
-addpath('../experimental_tools');
-addpath('scan_worker');
+addpath('../GCcal_spectrum');
+addpath('../tools_and_utilities');
+addpath('scan_worker_template');

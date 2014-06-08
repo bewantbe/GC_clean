@@ -3,7 +3,7 @@
 % De is p * p matrix, represents the variance of noise term
 % S is p * p * fftlen dim matrix
 
-function S = A2S_new(A, De, fftlen)
+function [S fqs] = A2S_new(A, De, fftlen)
 
 [p, m] = size(A);
 m = round(m/p);
@@ -15,5 +15,7 @@ for k = 1:fftlen
   h = G(:,:,k) \ hDe;
   S(:,:,k) = h*h';
 end
+
+fqs = ifftshift((0:fftlen-1)-floor(fftlen/2))'/fftlen;
 
 end
