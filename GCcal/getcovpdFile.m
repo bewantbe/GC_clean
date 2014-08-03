@@ -1,19 +1,22 @@
-% Calculate covariance matrices
-% Prucde the same result as getcovpd()
-% But cost less memory
-
-% X is a multivariate time series p*len dimension
-% p is the number of variates, len is the length of time
-% m is the maximun offset of covariance to calculate
-% result R is a p * (p*(m+1)) dimension matrix
-
+% Calculate covariance matrices from raw data file directly
+% Should produce the same result as getcovpd()
+% Slower than getcovpd(), but only cost a small (fixed) amount of memory.
+%
+% R = getcovpdFile(XF, p, m, x_skip, x_len)
+%
+% XF: file path that contain raw double data.
+%       p * len matrix, the multivariate time series;
+% p: integer, the number of variates, "len" is the length of each data;
+% m: integer, the maximun offset of covariance to calculate;
+% R: p * (p*(m+1)) matrix, the covariance series
+%
 % you may specify skip how many data points(each 8*p byte) by x_xkip
 
 function R = getcovpdFile(XF, p, m, x_skip, x_len)
 
 if (~exist('XF','var') || ~exist('p','var')|| ~exist('m','var') || isempty(XF))
   disp('usage: R = getcovpdFile(XFileName, p, m)');
-  error('XFileName must be file name to the X matrix');
+  error('XFileName must be a file name to the X matrix');
 end
 if ~ischar(XF)
   error('XFileName should be a string (file name)');
@@ -53,7 +56,7 @@ if x_skip>0
   fseek(fid, x_skip*p*8);
 end
 
-mem_lim = 2^29;            % memory limit in byte
+mem_lim = 2^28;            % memory limit in byte, 2^28 byte = 256 MB
 len_seg = round(mem_lim/8/p);
 
 % we need to make sure that X_head and X_tail are non-overlapped

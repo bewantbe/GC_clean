@@ -1,6 +1,6 @@
 % Compile all Matlab mex/Octave oct files used in this project
 % You should have a compiler that support C++11
-% Here assume you are using GCC or a GCC compatible compiler under unix-like system or using MSVC under Windows.
+% Here assume you are using GCC or a GCC compatible compiler under unix-like system or using MSVC under MS Windows.
 
 GC_CAL_HOME = fileparts(mfilename('fullpath'));
 
