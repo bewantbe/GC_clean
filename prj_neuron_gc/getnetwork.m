@@ -1,7 +1,9 @@
-% Get the adjacency matrix from its (file) name
-% Assume the matrix is stored in plain text file
-% You may specify the dir path in `pathdir' if it's not in working dir and
-%   not in dir of this file (./network)
+% Get the adjacency matrix from its (file) name.
+% Assume the matrix is stored in plain text file. Which essentially can be
+%   loaded  by `network = load('-ascii', [netstr, '.txt'])'
+% It will search current working dir (or pathdir if specified) and
+%   dir of this function.
+% It also possible to specifies the full path in `netstr'.
 
 function [network, matname] = getnetwork(netstr, pathdir)
 
@@ -9,11 +11,12 @@ if ~ischar(netstr)
   error('Input should be the name of the matrix');
 end
 
-e = filesep;
 if ~exist('pathdir','var')
-  pathdir = '';    % search default dir (usually working dir)
+  % Use default dir (usually working dir)
+  pathdir = '';
 end
 % always consider pathdir as dir name
+e = filesep;
 if ~isempty(pathdir) && pathdir(end) ~= '/' && pathdir(end) ~= e
   pathdir = [pathdir e];
 end
@@ -33,8 +36,8 @@ s_matname = {...
 };
 for matname = s_matname
   matname = matname{1};
-  fprintf('f=%s\n', matname);
-  if isempty(dir(matname))
+  %fprintf('f=%s\n', matname);
+  if ~exist(matname, 'file')
     continue
   end
   network = load('-ascii', matname);
