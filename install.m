@@ -22,7 +22,7 @@ if ~exist([dir_lib_ext,'eigen3'], 'file')
   unzip('eigen-3.1.4.zip','extern_lib');
   % rename it, since I use #include <eigen3/***> in the cpp source code
   movefile([dir_lib_ext,'eigen-eigen-36bf2ceaf8f5'],[dir_lib_ext,'eigen3']);
-  fprintf('done\n');  flushstdout();
+  fprintf('done.\n');  flushstdout();
 end
 
 disp('Compiling...');  flushstdout();
@@ -35,6 +35,7 @@ if is_linux
       system([common_cmd_prefix,'--mex getcovzpdhded.cpp']);
       system([common_cmd_prefix,'MAfilter_v5.cpp -o MAfilter']);
     else
+      % Matlab
       common_cmd_prefix = ['mex CXXFLAGS="\$CXXFLAGS -std=c++11 -I',dir_lib_ext,'" CXXOPTIMFLAGS="-O3 -march=native -fopenmp" LDFLAGS="\$LDFLAGS -fopenmp" '];
       eval([common_cmd_prefix, 'gendata_linear_v4_mex.cpp -output gendata_linear']);
       eval([common_cmd_prefix, 'getcovzpdhded.cpp']);

@@ -1,7 +1,11 @@
-% analysis a given time series in different order
-% input:
-%   X: p*len matrix
-%   s_od: orders to calculate, e.g. s_od = 1:99
+% Analysis a given time series in different order
+% Input:
+%   X   : p*len matrix;
+%   s_od: orders to calculate, e.g. s_od = 1:99.
+% Output:
+%   oGC: GC adjacency matrix in different order;
+%   oDe: residual varialce matrix in different order;
+%   R  : the covariance used in calculation.
 % For very bad condition problem you may try this:
 %   [oGC, oDe, R] = AnalyseSeries(X, s_od, 1)
 

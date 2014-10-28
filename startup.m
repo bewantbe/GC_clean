@@ -46,7 +46,7 @@ for id_f=1:length(cppfiles)
     end
     if isempty(dmex)
       disp(['GC package: "' path_mex '" not found!']);
-      error('GC package: run `install'' to generate all necessary mex files.');
+      warning('GC package: run `install'' to generate all necessary mex files.');
     end
     break;
   end

@@ -1,9 +1,7 @@
 % Analysis a given time series in different order
-% Input:
-%   X: p*len matrix
-%   s_od: orders to calculate, e.g. s_od = 1:99
+% Input & Output: See comments in AnalyseSeries.m
 % Since this function relies on Levinson algorithm, it not suitable for
-% vary bad condition problem
+% bad condition problem (e.g. very short data)
 
 % Time cost (haven't verified):
 %   O(m^1.5) (from numerical), or
