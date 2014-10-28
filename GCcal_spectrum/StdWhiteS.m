@@ -1,8 +1,14 @@
-% Whiten the auto spectrum of each variable
+% Whiten whole spectrum according to the auto spectrum of each variables
+%   WS = StdWhiteS(S);
+% S can be fftlen*p*p or p*p*fftlen matrix.
+% WS will have the same dimension as S.
 
 function WS = StdWhiteS(S)
+permuted = false;
 if size(S,2)~=size(S,3)
-  error('S shoule be fftlen*p*p matrix');
+  %error('S shoule be fftlen*p*p matrix');
+  permuted = true;
+  S = permute(S, [3,1,2]);
 end
 
 p   = size(S,2);
@@ -29,3 +35,7 @@ end
 %WS(:,1,2) = (1./X) .* S(:,1,2) .* conj(1./Y);
 %WS(:,2,1) = (1./Y) .* S(:,2,1) .* conj(1./X);
 %WS(:,2,2) = real((1./Y) .* S(:,2,2) .* conj(1./Y));
+
+if permuted
+  WS = ipermute(WS, [3,1,2]);
+end
