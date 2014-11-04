@@ -1,22 +1,22 @@
-% Calculate spectrum according to AR coefficient A
-% A is p * (p*m) dim matrix
-% noisecov is p * p matrix, represents the variance of noise term
-% S is p * p * fftlen dim matrix
+% Calculate spectrum according to AR coefficient
+% A  : p * (p*m)      matrix, AR coefficient in 2-d form(no zeroth term)
+% De : p * p          matrix, the residual covariance
+% S  : p * p * fftlen  array, corresponding spectrum
+% fqs: 1 * fftlen row vector, frequencies corresponding to the spectrum
 
-function S = A2S(A, noisecov, fftlen)
+function [S fqs] = A2S(A, De, fftlen)
 
 [p, m] = size(A);
 m = round(m/p);
-vA(:,:,1) = eye(p);             % convert A to 3-dim array
-for k = 1 : m
-    vA(:,:,k+1) = A(:,1-p+p*k:p*k);
+A = cat(3,eye(p),reshape(A,p,p,[]));  % convert A to 3-dim array
+G = fft(A,fftlen,3);
+S = zeros(p,p,m);
+hDe = chol(De,'lower');
+for k = 1:fftlen
+  h = G(:,:,k) \ hDe;
+  S(:,:,k) = h*h';
 end
-vAw = fft(vA,fftlen,3);
-Hw = zeros(p,p,m);              % transfer function
-for k = 1 : fftlen
-    Hw(:,:,k) = inv(vAw(:,:,k));
-    vAw(:,:,k) = Hw(:,:,k) * noisecov * Hw(:,:,k)';
-end
-S = vAw;
+
+fqs = ifftshift((0:fftlen-1)-floor(fftlen/2))'/fftlen;
 
 end
