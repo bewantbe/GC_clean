@@ -15,6 +15,6 @@ for k=1:p
     srd(k,:) = filter([1, sa], [1], X(k,:)-mean(X(k,:),2));
     sas(k,:) = sa;
 end
-srd(:,1:use_od) = 0;     % there is no data for this part
+%srd(:,1:use_od) = 0;     % there is no data for this part
 
 end
