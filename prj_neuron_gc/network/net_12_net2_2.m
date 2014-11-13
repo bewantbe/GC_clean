@@ -1,4 +1,4 @@
-#!/usr/local/bin/octave -qf
+%#!/usr/local/bin/octave -qf
 
 pp = 12;
 

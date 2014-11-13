@@ -1,4 +1,4 @@
-#
+%
 if strcmp(OCTAVE_VERSION,'3.4.3')==1
   addpath('/home/xyy/matlabcode/NUFFT_code/NUFFT_code/old_correct/NUFFT_code');
 else
