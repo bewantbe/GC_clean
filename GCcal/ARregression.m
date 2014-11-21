@@ -21,7 +21,10 @@ Rb = -R(:,1+p:p+p*m)';           % nonhomogeneous item
 Aall = (covz \ Rb)';             % solve all-jointed regression, covz * Aall' = Rb
 Deps = R(:,1:p) - Aall*Rb;       % variance matrix of noise term
 if (p>1)
-  Deps(Deps<0 & eye(p)==1) = 0;  % make sure their are positive (TODO: Is there better idea to fix this?)
+  bad_id = Deps<0 & eye(p)==1;
+  if sum(bad_id(:)) > 0
+    warning('GC_clean: ARregression(): non-positive defined!');
+  end
 end
 
 end
