@@ -67,7 +67,7 @@ if ceil(len/len_seg)==1
   R = getcovpd(X, m);
   return
 end
-X_head = fread(fid, [p, m], 'double');  % in ordre match original result we need this part
+X_head = fread(fid, [p, m], 'double');  % in order to match original result we need this part
 X      = X_head;
 X_glue = zeros(p, m);
 R      = zeros(p, p*(m+1));
@@ -91,7 +91,7 @@ for k = 0 : m
   R(:, 1+p*k : p+p*k) = R(:, 1+p*k : p+p*k) - aveX*aveX';
 end
 
-% make the result match getcovpd exactly (mathematically)
+% make the result match getcovpd() exactly (mathematically)
 X_tail = X(:, end-m+1:end);
 R_comp = zeros(p, p*(m+1));
 for k = 0 : m

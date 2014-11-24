@@ -4,16 +4,15 @@
 % S  : p * p * fftlen  array, corresponding spectrum
 % fqs: 1 * fftlen row vector, frequencies corresponding to the spectrum
 
-function [S fqs] = A2S(A, De, fftlen)
+function [S, fqs] = A2S(A, De, fftlen)
 
 [p, m] = size(A);
 m = round(m/p);
 A = cat(3,eye(p),reshape(A,p,p,[]));  % convert A to 3-dim array
-G = fft(A,fftlen,3);
-S = zeros(p,p,m);
+S = fft(A,fftlen,3);
 hDe = chol(De,'lower');
 for k = 1:fftlen
-  h = G(:,:,k) \ hDe;
+  h = S(:,:,k) \ hDe;
   S(:,:,k) = h*h';
 end
 

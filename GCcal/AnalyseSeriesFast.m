@@ -1,19 +1,25 @@
-% Analysis a given time series in different order
+% Analyse a given time series in a series of orders
 % Input & Output: See comments in AnalyseSeries.m
 % Since this function relies on Levinson algorithm, it not suitable for
-% bad condition problem (e.g. very short data)
-
+% bad condition problem (e.g. very short data, filtered data)
+%
 % Time cost (haven't verified):
-%   O(m^1.5) (from numerical), or
 %   O(p^4 * m^2) (from theory)
 
-function [oGC, oDe, R] = AnalyseSeriesFast(X, s_od)
-if ~exist('bad_mode','var')
-  bad_mode = 0;
-end
-m = max(s_od);
-R = getcovpd(X, m);
-p = size(X, 1);
+function [oGC, oDe, R] = AnalyseSeriesFast(X, s_od, b_input_cov)
+  if exist('b_input_cov','var') && b_input_cov
+    % so X is actually covariance
+    R = X;
+    p = size(R, 1);
+    m = round(size(R, 2) / p) - 1;
+    if (m < max(s_od))
+      error('GC_clean: AnalyseSeriesLevinson: no enough data');
+    end
+  else
+    p = size(X, 1);
+    m = max(s_od);
+    R = getcovpd(X, m);
+  end
 oGC = zeros(p, p, length(s_od));
 oDe = zeros(p, p, length(s_od));
 
