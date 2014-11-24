@@ -6,8 +6,8 @@
 #define CMAKE_BUILD_TYPE Release
 #include <eigen3/Eigen/Dense>
 
-#define HELP_STR "MA filter (B, X)"
-DEFUN_DLD (MAfilter_v5, args, nargout, HELP_STR)
+#define HELP_STR "MAfilter (B, X)"
+DEFUN_DLD (MAfilter, args, nargout, HELP_STR)
 {
   int nargin = args.length();
   if (nargin!=2) {

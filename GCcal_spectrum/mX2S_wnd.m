@@ -40,7 +40,7 @@ fqs = ifftshift((0:fftlen-1)-floor(fftlen/2))'/fftlen;
 % get window function
 wnd = ones(fftlen, 1);      % use column vector
 if exist('f_wnd','var') && ~isempty(f_wnd)
-  if ismatrix(f_wnd)
+  if ismatrix(f_wnd) && isnumeric(f_wnd)
     wnd(:) = f_wnd;
   else
     % f_wnd is defined in [-0.5, 0.5]
