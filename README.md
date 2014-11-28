@@ -94,6 +94,11 @@ See GCcal/readme_GCcal.txt for details. Here list some main functions:
 
         Estimate spectral density for non-uniformly sampled data.
 
+* `IFsimu_release_2.1.1.zip, prj_neuron_gc/raster_tuning`
+
+    These are Integrate-and-Fire model neuron simulator. See the readme in `IFsimu_release_2.1.1.zip/exec/Readme.txt` for details. The latest version can be found in https://bitbucket.org/bewantbe/ifsimu.
+
+
 References<a name="references"></a>
 ----------
 
