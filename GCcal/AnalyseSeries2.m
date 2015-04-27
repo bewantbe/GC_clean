@@ -10,16 +10,22 @@
     disp(oGC(:,:,20));
 %}
 
-function [aic_od, bic_od, zero_GC, oAIC, oBIC] = AnalyseSeries2(s_od, oGC, oDe, len)
+function [aic_od, bic_od, zero_GC, oAIC, oBIC, oAICc] =...
+  AnalyseSeries2(s_od, oGC, oDe, len)
 
 p = size(oGC, 1);
 oAIC = zeros(1, length(s_od));
 oBIC = zeros(1, length(s_od));
+oAICc = zeros(1, length(s_od));
 for k=1:length(s_od)
     npm = p^2 * s_od(k);          % number of free parameters
     oAIC(k) = log(det(oDe(:,:,k))) + 2 * npm / len;
     oBIC(k) = log(det(oDe(:,:,k))) + npm * log(len) / len;
-%??    oAICc(k)= log(det(oDe(:,:,k))) + 2 * npm / len + 2*npm*(npm+1)/(len-npm-1)/len;
+    if len>npm+1
+      oAICc(k)= log(det(oDe(:,:,k))) + 2 * npm / len + 2*npm*(npm+1)/(len-npm-1)/len;
+    else
+      oAICc(k) = nan;
+    end
 end
 
 [~, od_id]  = min(oBIC);
