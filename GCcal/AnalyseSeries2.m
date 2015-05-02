@@ -10,19 +10,25 @@
     disp(oGC(:,:,20));
 %}
 
-function [aic_od, bic_od, zero_GC, oAIC, oBIC, oAICc] =...
-  AnalyseSeries2(s_od, oGC, oDe, len)
+function [aic_od, bic_od, zero_GC, oAIC, oBIC, oAICc] = AnalyseSeries2(s_od, oGC, oDe, len, bad_mode)
 
 p = size(oGC, 1);
 oAIC = zeros(1, length(s_od));
 oBIC = zeros(1, length(s_od));
 oAICc = zeros(1, length(s_od));
+len0 = len;
+if exist('bad_mode','var') && bad_mode == 2
+  npm0 = p;
+else
+  npm0 = 0;
+end
 for k=1:length(s_od)
-    npm = p^2 * s_od(k);          % number of free parameters
-    oAIC(k) = log(det(oDe(:,:,k))) + 2 * npm / len;
-    oBIC(k) = log(det(oDe(:,:,k))) + npm * log(len) / len;
+    len = len0 - s_od(k);         % short data correction
+    npm = p^2 * s_od(k) + npm0;   % number of free parameters
+    oAIC(k) = len * log(det(oDe(:,:,k))) + 2 * npm;
+    oBIC(k) = len * log(det(oDe(:,:,k))) + npm * log(len);
     if len>npm+1
-      oAICc(k)= log(det(oDe(:,:,k))) + 2 * npm / len + 2*npm*(npm+1)/(len-npm-1)/len;
+      oAICc(k)= len * log(det(oDe(:,:,k))) + 2 * npm + 2*npm*(npm+1)/(len-npm-1);
     else
       oAICc(k) = nan;
     end

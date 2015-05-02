@@ -13,15 +13,31 @@
 %}
 % 2012-01-21 xyy
 
-function wGC = nGrangerF(X, od, fftlen)
+function wGC = nGrangerF(X, od, fftlen, bad_mode)
 if (exist('fftlen', 'var')==0)
 	fftlen = 1024;
 end
 if (exist('od', 'var')==0)
 	od = 64;
 end
+if ~exist('bad_mode','var')
+	bad_mode = 0;
+end
+if length(od)>1
+  od_joint = od(1);  % order for joint AR fitting
+  od_R = max(od);      % order for cov series
+else
+  od_joint = od;
+  od_R = od;
+end
 
-R = getcovpd(X, od);
+if bad_mode > 0
+  [gc, De, As2] = pos_nGrangerT_qrm(X, od_joint);
+  S = A2S(As2(:,1:end-1), De, fftlen);
+  R = S2cov(S, od_R);
+else
+  R = getcovpd(X, od_R);
+end
 p = size(R,1);
 wGC = zeros(p,p,fftlen);
 for ki=1:p
