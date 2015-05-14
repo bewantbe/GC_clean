@@ -3,7 +3,7 @@
 % much stable than pos_nGrangerT and pos_nGrangerT2
 % but cost much more memory and more time to calculate
 
-function [GC, Deps, Aall] = pos_nGrangerT_qrext(X, m, extX)
+function [GC, Deps, Aall, res] = pos_nGrangerT_qrext(X, m, extX)
 if (nargin ~= 3)
     error('Usage: [GC, Deps] = pos_nGrangerT_qrext(X, m, extX)');
 end
@@ -24,6 +24,8 @@ Aall = -(X(:, m+1:len) / Z);
 
 fcov0 = @(x) x*x'/(len-m-1);
 Deps = fcov0(X(:, m+1:len) + Aall*Z);
+
+res = X(:, m+1:len) + Aall*Z;
 
 if (p == 1)
     GC = 0;
