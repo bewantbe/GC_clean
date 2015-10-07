@@ -13,15 +13,20 @@ end
 switch bad_mode
 case 0
   GC = pairRGrangerT(getcovpd(X, m));
+  return
 case 1
-  p = size(X, 1);
-  GC = zeros(p,p);
-  for ii=1:p
-      for jj=ii+1:p
-          gc = pos_nGrangerT_qrm(X([ii,jj],:), m);
-          GC(jj,ii) = gc(2,1);
-          GC(ii,jj) = gc(1,2);
-      end
-  end
+  f_gc = @(e_X, e_m) pos_nGrangerT2(e_X, e_m);
+case 2
+  f_gc = @(e_X, e_m) pos_nGrangerT_qrm(e_X, e_m);
+end
+
+p = size(X, 1);
+GC = zeros(p,p);
+for ii=1:p
+    for jj=ii+1:p
+        gc = f_gc(X([ii,jj],:), m);
+        GC(jj,ii) = gc(2,1);
+        GC(ii,jj) = gc(1,2);
+    end
 end
 
