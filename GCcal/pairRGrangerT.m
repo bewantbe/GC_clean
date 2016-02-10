@@ -1,6 +1,6 @@
 % Compute pair-wise Granger Causality of p-variable input
 
-% time cost is about: O(p^2 *8*m^2)
+% Time cost is about: O(p^2 *16*m^3)
 
 function GC = pairRGrangerT(R)
 [p,l] = size(R);

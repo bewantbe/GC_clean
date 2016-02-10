@@ -2,8 +2,8 @@
 % this version use completely symmetric positive definite covx from Xt
 % time and memory cost is little bigger than nGrangerT.m
 
-% time   cost is about: O(len * p * m + p^3 * m^2)
-% memory cost is about: O(len * p + (m*p)^2)
+% Time   cost is about: O(len * p^2 * m + p^4 * m^3)
+% Memory cost is about: O(len * p + (m*p)^2)
 
 function [GC, Deps, Aall] = pos_nGrangerT2(X, m, showcond)
 if (nargin ~= 2 && nargin ~= 3)

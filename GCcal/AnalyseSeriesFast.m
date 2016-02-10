@@ -28,6 +28,10 @@ for k=1:length(s_od)
   oDe(:,:,k) = s_De(:,:,s_od(k));
 end
 
+if p==1
+  return;
+end
+
 dj = zeros(p,1);
 for j=1:p   % omit j-th variable
   [~, s_Dej] = BlockLevinson(R((1:p)~=j, mod(0:p*(m+1)-1, p)+1~=j));

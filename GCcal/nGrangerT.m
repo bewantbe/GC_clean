@@ -5,7 +5,7 @@
 % GC is the causality matrix, influence direction is column -> row
 % Deps is the variance matrix of noise term (D(epsilon))
 
-% time cost is about: O(len * m * p^2 + p^3 * m^2)
+% time cost is about: O(len * m * p^2 + p^4 * m^3)
 
 function [GC, Deps, Aall] = nGrangerT(X, m)
 if (nargin ~= 2)

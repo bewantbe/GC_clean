@@ -1,7 +1,9 @@
-% Multi-variate time series Granger causality test in time domain
-% this version use '\' operator (QR decomposition) to perform LSE
-% much stable than pos_nGrangerT and pos_nGrangerT2
-% but cost much more memory and more time to calculate
+% Multi-variate time series Granger causality test in time domain.
+% This version use '\' operator (QR decomposition) to perform LSE.
+% Much stable than pos_nGrangerT and pos_nGrangerT2,
+% but cost much more memory and more time to calculate.
+% Recommend to use pos_nGrangerT_qrm(X, m) which also put mean value
+%   to LSE (even more stable).
 
 function [GC, Deps, Aall] = pos_nGrangerT_qr(X, m)
 if (nargin ~= 2 && nargin ~= 3)

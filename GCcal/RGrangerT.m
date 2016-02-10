@@ -1,8 +1,8 @@
 % Multi-variate time series Granger causality test in time domain  v1.2
-% use only covariance series to calculate GC
-% covariance series R is a p * (p*(m+1)) dimension matrix
+% Use only covariance series to calculate GC.
+% Covariance series R is a p * (p*(m+1)) dimension matrix.
 
-% time cost is about: O(p^3 * m^2) ?
+% Time cost is about: O(p^4 * m^3)
 
 function [GC, Deps, Aall] = RGrangerT(R)
 

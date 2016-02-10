@@ -1,8 +1,8 @@
-% Multi-variate time series Granger Causality test in time domain
-% this version (1.0) use completely symmetric positive definite covx from Xt
-% much slower and cost much more memory than nGrangerT.m
+% Multi-variate time series Granger Causality test in time domain.
+% This version (1.0) use completely symmetric positive definite covx from Xt.
+% Much slower and cost much more memory than nGrangerT.m.
 
-% time cost is about: O(len * m * p^2 + p^3 * m^2)
+% Time cost is about: O(len * m^2 * p^2 + p^4 * m^3)
 
 function [GC, Deps, Aall] = pos_nGrangerT(X, m, showcond)
 if (nargin ~= 2 && nargin ~= 3)

@@ -78,7 +78,7 @@ if ~b_lack_accuracy  % high accuracy is not requested, so try Levinson first
       b_lack_accuracy = true;
       %min(diag(df)./diag_Rxy0)
       %diag(df)./diag_Rxy0
-      warning(sprintf('chooseOrderAuto: lack of accuracy (at order %d), trying SPD covz ...', k));
+      warning('GCcal:switching-algorithm', sprintf('chooseOrderAuto: lack of accuracy (at order %d), trying SPD covz ...', k));
       X = X_bk;
       clear('X_bk');
       break;
@@ -115,7 +115,7 @@ end
 %disp('Using covz version...');
 if exist('k', 'var') && ~exist('od_full','var')  % if we failed in Levinson
   od_max = min([2*k+10, od_max]);
-  warning(sprintf('chooseOrderAuto: od_max set to %d. Specify the order explicitly if you want something different.', od_max));
+  warning('GCcal:guessing-best-parameter', sprintf('chooseOrderAuto: od_max set to %d. Specify the order explicitly if you want something different.', od_max));
 end
 s_xic_val = [];
 s_lndet_de = [];
@@ -133,7 +133,7 @@ for k = 1:od_max
   catch
     s_lndet_de = [s_lndet_de, -Inf(1, od_max-k+1)]; 
     s_xic_val = [s_xic_val, -Inf(1, od_max-k+1)];
-    warning('chooseOrderAuto: A really hard problem... Returning -Inf (BIC value). You may try pos_nGrangerT_qr() yourself, and that''s the last hope as far as I know.');
+    warning('Gccal:no-way', 'chooseOrderAuto: A really hard problem... Returning -Inf (BIC value). You may try pos_nGrangerT_qrm() yourself, and that''s the last hope as far as I know.');
     break;
   end
 end
