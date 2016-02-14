@@ -1,5 +1,5 @@
-% Compute pair-wise Granger Causality of p-variable input
-
+% Pairwise Granger causality calculation in time domain.
+%
 % Time cost is about: O(p^2 *16*m^3)
 
 function GC = pairRGrangerT(R)

@@ -1,5 +1,12 @@
-% Calculate high order regression of AR model
-% by using covariance R
+% Multi-variable linear auto-regression.
+% By solving normal equation in least squares.
+% R can be the form of covz (for m=2):
+% covz = 
+%   [ R(0)  R(1)  R(2)
+%     R(1)' R(0)  R(1)
+%     R(2)' R(1)' R(0) ]
+%
+% e.g. Aall = ARregressionpd(getcovzpd(X, od), size(X,1))
 
 function [Aall, Deps] = ARregressionpd(R, p)
 if exist('p','var') && size(R,1)==size(R,2)

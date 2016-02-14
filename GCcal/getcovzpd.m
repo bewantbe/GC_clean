@@ -1,4 +1,11 @@
-% get positive defined COVZ
+% Get positive defined COVZ (the big covariance matrix)
+% Mainly for solving linear least square problem (faster).
+% covz = E( Z*Z' ), Z = [X(t); X(t-1); ... X(t-m)];
+% approximately, that is (e.g. m = 2)
+%   [ R(0)  R(1)  R(2)
+%     R(1)' R(0)  R(1)
+%     R(2)' R(1)' R(0) ]
+% where R(j) = E( X(t)*X(t-j)' ).
 
 function covz = getcovzpd(X, m)
 

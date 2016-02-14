@@ -1,7 +1,7 @@
 % Calculate cov though AR parameters directly, v1.0
 % Using spectrum to calculate order m, p-var AR model covariance series
 % extm means extra order m to calculate (covariance series)
-
+%
 % only support following calls:
 %  para2cov(1, 2)
 %  para2cov(2, 2)

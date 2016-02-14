@@ -1,4 +1,8 @@
-%
+% Multi-variate conditional Granger causality calculation in time domain.
+% Much faster than pos_nGrangerT2() for large (>50) variable case.
+% Almost as stable as pos_nGrangerT2(), and mathematically equivalent to it.
+% Time cost: O( len*m*p^2 ) + O( (p*m)^3 )
+% RAM  cost: O( len*p ) + O( 3.5*(p*m)^2 ) * 8 Byte
 
 function GC = nGrangerTfast(X, m, b_whiten_first)
   p = size(X, 1);
@@ -7,7 +11,7 @@ function GC = nGrangerTfast(X, m, b_whiten_first)
     switch b_whiten_first
     case 1
       % whiten time series data directly
-      X = WhiteningFilter(X, m);  % whiten data
+      X = WhiteningFilter(X, m);  % whiten data, could change actual order needed.
       covz = getcovzpd(X, m);
     case 2
       % whiten the covariance in frequency domain

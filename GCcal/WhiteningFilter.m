@@ -1,4 +1,4 @@
-%% get residual and coefficients of self-regression
+%% Get residuals and coefficients in auto-regression of each variables.
 
 function [srd, sas] = WhiteningFilter(X, use_od, coeff_mode)
 [p, len] = size(X);

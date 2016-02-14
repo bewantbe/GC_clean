@@ -1,8 +1,9 @@
-% Multi-variate time series Granger causality test in time domain  v1.2
+% Multi-variate conditional Granger causality calculation in time domain.  v1.2
 % Use only covariance series to calculate GC.
 % Covariance series R is a p * (p*(m+1)) dimension matrix.
-
+%
 % Time cost is about: O(p^4 * m^3)
+% RAM  cost is about: O(2*(p*m)^2) * 8Byte
 
 function [GC, Deps, Aall] = RGrangerT(R)
 

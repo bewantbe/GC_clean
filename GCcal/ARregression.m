@@ -1,5 +1,9 @@
-% Calculate high order regression of AR model
-% by using covariance R
+% Multi-variable linear auto-regression.
+% By solving Yule–Walker equation.
+% Using covariances R = [R(0), R(1),..., R(m)], R(j)=E( X(t)*X(t-j)' )
+%
+% Time cost: O((p*m)^3)
+% RAM  cost: O((p*m)^2)
 
 function [Aall, Deps] = ARregression(R)
 

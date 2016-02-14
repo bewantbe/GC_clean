@@ -1,5 +1,8 @@
-% Calculate GC without explicitly do p-1 variable regressions
-% Much faster than RGrangerT(R) for large variable case.
+% Multi-variate conditional Granger causality calculation in time domain.
+% Much faster than RGrangerT(R) and pos_nGrangerT2() for large (>50) variable case.
+% Almost as stable as pos_nGrangerT2(), and mathematically equivalent to it.
+% Time cost: O( (p*m)^3 )              (Typical time for p=100,m=40 is 5 seconds)
+% RAM  cost: O( 3.5*(p*m)^2 ) * 8Byte  (Typical max scale is p=400,m=40 for 8GB RAM)
 
 function GC = RGrangerTfast(R, p)
   if exist('p', 'var')

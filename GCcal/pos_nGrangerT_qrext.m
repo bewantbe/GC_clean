@@ -1,7 +1,11 @@
-% Multi-variate time series Granger causality test in time domain.
+% Multi-variate conditional Granger causality calculation in time domain.
 % This version use '\' operator (QR decomposition) to perform LSE.
 % Much stable than pos_nGrangerT and pos_nGrangerT2,
 % but cost much more memory and more time to calculate.
+% This version allow user put time series `extX' to be project out.
+%
+% Time cost: O(p * (p*m+extl)^2 * L),  extl is number of variables of extX
+% RAM  cost: O((p*m+extl)*L)
 
 function [GC, Deps, Aall, res] = pos_nGrangerT_qrext(X, m, extX)
 if (nargin ~= 3)

@@ -1,3 +1,11 @@
+% Convert covariance series (function) to big covariance matrix
+% like (R(i)=E( X(t)*X(t-i)' )):
+% R = [R(0), R(1), R(2)];
+% covz = R2covz(R);
+% covz = 
+%   [ R(0)  R(1)  R(2)
+%     R(1)' R(0)  R(1)
+%     R(2)' R(1)' R(0) ]
 
 function covz = R2covz(R)
 

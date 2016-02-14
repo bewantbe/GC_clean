@@ -1,7 +1,8 @@
-% Calculate GC without explicitly do p-1 variable regressions
+% Multi-variate conditional Granger causality calculation in time domain.
 % Do regression by Levinson method (Toeplitz)
-% Much faster than RGrangerT(R) for large variables case.
-% Significantly faster than RGrangerTfast(R) for large variables case
+% Significantly faster than RGrangerTfast(R) for large variables case, and use less RAM.
+% Time cost: O( p^3*m^2*log(m) )    (Typical time for p=100,m=40 is 1.7 seconds)
+% RAM  cost: O( 24*p^2*m ) * 8Byte  (Typical max scale is p=1000,m=40 for 8GB RAM)
 
 function GC = RGrangerTLevinson(R)
   [s_Qjj, A, D] = GetQyy(R);
