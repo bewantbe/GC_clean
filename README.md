@@ -12,25 +12,27 @@ Function overview
 
 There are various ways to calculate GC, some are fast, some are more robust to ill-condition problem (but slow and maybe consume a lots memory).
 
-The calculation of GC usually can be divided into three steps (time domain):
+The calculation of GC usually can be divided into three steps (time domain <a name="gc-step"></a>):
 
-- Compute [autocorrelation](http://en.wikipedia.org/wiki/Autocorrelation) of input time series.
-- Use the autocorrelation to solve the [vector autoregression](http://en.wikipedia.org/wiki/Vector_autoregression) problem, and get residual variances.
-- Use the residual variances obtained above to calculate GC.
+1. Compute multivariate [autocorrelation](http://en.wikipedia.org/wiki/Autocorrelation) (also called [correlation function](http://en.wikipedia.org/wiki/Correlation_function)) of input time series.
+2. Use the autocorrelation to solve the [vector autoregression](http://en.wikipedia.org/wiki/Vector_autoregression) problem, and get residual variances.
+3. Use the residual variances obtained above to calculate GC.
 
 Or, in frequency domain it is:
 
-- Estimate the [spectral density](http://en.wikipedia.org/wiki/Spectral_density_estimation) of input time series.
-- Perform the (minimum phase) spectral factorization to get the transfer function and residual variances.
-- Use the residual variance obtained above to calculate GC.
+1. Estimate the [spectral density](http://en.wikipedia.org/wiki/Spectral_density_estimation) of input time series.
+2. Perform the (minimum phase) spectral factorization to get the transfer function and residual variances.
+3. Use the residual variance obtained above to calculate GC.
 
 Both time domain and frequency domain method can be used to calculate frequency domain GC.
 
-Ill-condition data here is the time series that some variables are highly correlated. The data after a low/high/band pass filter could be Ill-conditioned. Resampling to the pass band can turn it to "good-condition" problem.
+Knowing d
+
+Ill-condition data here is the time series that some variables are highly correlated. The data after a low/high/band pass filter will be ill-conditioned in general. Resampling to the pass band can turn it to "good-condition" problem.
 
 ### Functions:
 
-See GCcal/readme_GCcal.txt for details. Here list some main functions:
+See GCcal/readme_GCcal.txt for details (in Chinese). Here list some main functions:
 
 * Calculate GC in time domain (under `GCcal/`).
 
@@ -38,23 +40,26 @@ See GCcal/readme_GCcal.txt for details. Here list some main functions:
 
         Use Yule-Walker equation for the 2nd step. It's simple and fast (for fewer than hundred variables). Not stable for short data (e.g. <1e4) and ill-condition data.
 
-  - `pos_nGrangerT.m, pos_nGrangerT2.m, pos_nGrangerT_qr.m`
+  - `pos_nGrangerT.m, pos_nGrangerT2.m, pos_nGrangerT_qr.m, pos_nGrangerT_qrm.m`
 
         Solve the finite data point linear least square problem in the 2nd step. Essentially solving the normal equation `"X'*X*A =X'*Y"`. The robustness relys on the '/' operator in Octave (or Matlab) and accumulation round-off error in the 1st step.
 
-        `pos_nGrangerT.m` calculate as the definition. Much more stable than `nGrangerT.m`.
+        `pos_nGrangerT.m` calculate as the definition. More stable than `nGrangerT.m`.
 
         `pos_nGrangerT2.m` calculate as its definition, but use some trick to do it fast (as fast as `nGrangerT.m`) and use much less memory. Slightly more Round-off error than `pos_nGrangerT.m`.
 
-        `pos_nGrangerT_qr.m` solve the linear least square problem by [QR decomposition](http://en.wikipedia.org/wiki/QR_decomposition) in "X*A=Y" (performed by the Octave operator "/"). Effectively square rooted the [condition number](http://en.wikipedia.org/wiki/Condition_number). This is the most stable (most slow) and accurate method in this package.
+        `pos_nGrangerT_qr.m` solve the linear least square problem by [QR decomposition](http://en.wikipedia.org/wiki/QR_decomposition) in "X*A=Y" (performed by the operator "/"). Effectively square rooted the [condition number](http://en.wikipedia.org/wiki/Condition_number).
+
+        `pos_nGrangerT_qrm.m` A variation of `pos_nGrangerT_qr.m`, which also put mean value into least square problem (instead of simply subtract it). This is the most stable (most slow) and accurate method in this package.
 
   - `nGrangerTfast.m`
 
-        Almost as stable as `pos_nGrangerT2.m`, and mathematically the same as `pos_nGrangerT2.m` for non-singular problem. It is fast (even faster than `nGrangerT.m`) for case of tens and hundreds of variables.
+        Almost as stable as `pos_nGrangerT2.m`, and mathematically equivalent to `pos_nGrangerT2.m`. It is fast (even faster than `nGrangerT.m`) for case of tens and hundreds of variables.
 
   - `RGrangerTLevinson.m`
 
         Same method as `nGrangerTfast.m`, but use [Levinson recursion](http://en.wikipedia.org/wiki/Levinson_recursion) to perform the matrix inversion. Much faster than even `nGrangerTfast.m` for the case of hundreds and a thousand variables. Use it as `GC = RGrangerTLevinson( getcovpd(X, m) );`. Stability is worse than `nGrangerT.m`, but still enough for non-ill-condition problem (e.g. cond<1e6).
+        Note: to overcome the ill-condition problem, one may whiten the time series fist (see `WhiteningFilter.m`).
 
   - `pairGrangerT.m`
 
@@ -65,18 +70,18 @@ See GCcal/readme_GCcal.txt for details. Here list some main functions:
 
   - `nGrangerF.m`
 
-        As not stable as `nGrangerT.m`. And very slow for large variables.
+        As not stable as `nGrangerT.m`. And very slow for large variables (not speed optimized, but should be easy to read and understand following [John Geweke (1984)](#references)).
 
 
 * Related functions
 
   - `GCcal/gc_prob_nonzero.m`
 
-        Get p-value for the corresponding GC. Used for significance test.
+        Get p-value ("probability" of nonzero) for the corresponding GC. Used for significance test.
 
   - `GCcal/gc_prob_intv.m`
 
-        Get confidence interval of GC.
+        Get confidence interval of GC value.
 
   - `GCcal/chooseOrderAuto.m, GCcal/chooseROrderFull.m`
 
@@ -96,8 +101,55 @@ See GCcal/readme_GCcal.txt for details. Here list some main functions:
 
 * `IFsimu_release_2.1.1.zip, prj_neuron_gc/raster_tuning`
 
-    These are Integrate-and-Fire model neuron simulator. See the readme in `IFsimu_release_2.1.1.zip/exec/Readme.txt` for details. The latest version can be found in https://bitbucket.org/bewantbe/ifsimu.
+    These are Integrate-and-Fire model neuron simulator. See the readme in `IFsimu_release_2.1.1.zip/exec/Readme.txt` for details. The latest version can be found https://bitbucket.org/bewantbe/ifsimu or alternatively https://github.com/bewantbe/point-neuron-network-simulator.
 
+Speed
+-----
+(Machine: i5-2400, 8GB)
+
+### Speed of the [1st step](#gc-step)
+
+#### Function `getcovpd.m, getcovzpd.m`.
+
+> O(p^2 * m * L)
+
+len=1e5, sec | p=100 | 200 | 500 | 1000
+:-----------:|:-----:|:---:|:---:|:-----:
+od=20        | 1.339 | 3.96 | 17.02 | 59.7
+od=40        | 2.67  | 7.71 | 32.14 | 118.1
+
+(In many cases, you will need 10 times longer data, which the time above will be 10 times higher)
+
+### Speed of the [2nd and 3rd step](#gc-step)
+
+#### Function `RGrangerT.m` (similarly the 2nd step of `pos_nGrangerT2.m`).
+
+> O(p^4 * m^3)
+
+sec    | p=100 | 200 | 500
+:-----:|:-----:|:---:|:---:
+od=20  | 24.2  | 243.6  | 6870.3
+od=40  | 120.4 | 1358.2 | oom
+
+#### Function `RGrangerTfast.m`.
+
+> O(p^3 * m^3)
+
+sec    | p=100 | 200 | 500
+:-----:|:-----:|:---:|:---:
+od=20  | 0.721 | 4.06 | 52.1
+od=40  | 4.63  | 27.2 | oom
+
+#### Function `RGrangerTLevinson.m`.
+
+> O( p^3 * m^2 * log(m) )
+
+sec    | p=100 | 200 | 500  | 1000
+:-----:|:-----:|:---:|:----:|:------:
+od=20  | 0.434 | 1.987 | 19.5 | 110.5
+od=40  | 1.662 | 8.353 | 76.9 | 433.9
+
+(oom = out of memory)
 
 References<a name="references"></a>
 ----------
