@@ -103,9 +103,13 @@ See GCcal/readme_GCcal.txt for details (in Chinese). Here list some main functio
 
     These are Integrate-and-Fire model neuron simulator. See the readme in `IFsimu_release_2.1.1.zip/exec/Readme.txt` for details. The latest version can be found https://bitbucket.org/bewantbe/ifsimu or alternatively https://github.com/bewantbe/point-neuron-network-simulator.
 
-Speed
+Speed<a name="speed"></a>
 -----
 (Machine: i5-2400, 8GB)
+
+  len: length of data (number of time points).  
+  p  : number of variables.  
+  m  : fitting order, also denoted as `od`.
 
 ### Speed of the [1st step](#gc-step)
 
