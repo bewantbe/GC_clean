@@ -4,7 +4,7 @@
 % Time cost: O( p^3*m^2*log(m) )    (Typical time for p=100,m=40 is 1.7 seconds)
 % RAM  cost: O( 24*p^2*m ) * 8Byte  (Typical max scale is p=1000,m=40 for 8GB RAM)
 
-function GC = RGrangerTLevinson(R)
+function [GC, D, A] = RGrangerTLevinson(R)
   [s_Qjj, A, D] = GetQyy(R);
 
   p = size(R, 1);

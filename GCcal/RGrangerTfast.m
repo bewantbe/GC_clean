@@ -4,7 +4,7 @@
 % Time cost: O( (p*m)^3 )              (Typical time for p=100,m=40 is 5 seconds)
 % RAM  cost: O( 3.5*(p*m)^2 ) * 8Byte  (Typical max scale is p=400,m=40 for 8GB RAM)
 
-function GC = RGrangerTfast(R, p)
+function [GC, D, A2d] = RGrangerTfast(R, p)
   if exist('p', 'var')
     % so R is covz matrix
     covz = R;
