@@ -52,7 +52,7 @@ See GCcal/readme_GCcal.txt for details (in Chinese). Here list some main functio
   - Usage suggestion:
      + Use `nGrangerTfast.m` for general purpose GC calculation.
      + Use `pos_nGrangerT_qrm.m` for ill-condition data.
-     + Use `RGrangerTLevinson.m` for handreds or more variables case.
+     + Use `RGrangerTLevinson.m` for hundreds or more variables case.
 
   - `nGrangerT.m`
 
@@ -60,7 +60,7 @@ See GCcal/readme_GCcal.txt for details (in Chinese). Here list some main functio
 
   - `pos_nGrangerT.m, pos_nGrangerT2.m, pos_nGrangerT_qr.m, pos_nGrangerT_qrm.m`
 
-        Solve the finite data point linear least square problem in the 2nd step. Essentially solving the normal equation `"X'*X*A =X'*Y"`. The robustness relys on the '/' operator in Octave (or Matlab) and accumulation round-off error in the 1st step.
+        Solve the finite data point linear least square problem in the 2nd step. Essentially solving the normal equation `"X'*X*A =X'*Y"`. The robustness relies on the '/' operator in Octave (or Matlab) and accumulation round-off error in the 1st step.
 
         `pos_nGrangerT.m` calculate as the definition. More stable than `nGrangerT.m`.
 
@@ -119,7 +119,7 @@ See GCcal/readme_GCcal.txt for details (in Chinese). Here list some main functio
 
 * `IFsimu_release_2.1.1.zip, prj_neuron_gc/raster_tuning`
 
-    These are Integrate-and-Fire model neuron simulator. See the readme in `IFsimu_release_2.1.1.zip/exec/Readme.txt` for details. The latest version can be found https://bitbucket.org/bewantbe/ifsimu or alternatively https://github.com/bewantbe/point-neuron-network-simulator.
+    An Integrate-and-Fire model neuron simulator. See the readme in `IFsimu_release_2.1.1.zip/exec/Readme.txt` for details. The latest version can be found in https://bitbucket.org/bewantbe/ifsimu or an alternative simulator https://github.com/bewantbe/point-neuron-network-simulator (faster, but currently in experimental state).
 
 Speed<a name="speed"></a>
 -----
@@ -186,7 +186,7 @@ Note:
 
   * oom = out of memory
 
-  * Time complexity are theoretical results. Actual time may vary due to e.g. cache effect and multithreading.
+  * Time complexity are theoretical results. Actual time may vary due to e.g. cache effect and multi-threading.
 
 References<a name="references"></a>
 ----------
