@@ -12,7 +12,7 @@ Function overview
 
 There are various ways to calculate GC, some are fast, some are more robust to ill-condition problem (but slow and maybe consume a lots memory).
 
-The calculation of GC usually can be divided into three steps (time domain <a name="gc-step"></a>):
+The calculation of GC usually can be divided into three steps (time domain):<a name="gc-step"></a>
 
 1. Compute multivariate [autocorrelation](http://en.wikipedia.org/wiki/Autocorrelation) (also called [correlation function](http://en.wikipedia.org/wiki/Correlation_function)) of input time series.
 2. Use the autocorrelation to solve the [vector autoregression](http://en.wikipedia.org/wiki/Vector_autoregression) problem, and get residual variances.
@@ -26,15 +26,33 @@ Or, in frequency domain it is:
 
 Both time domain and frequency domain method can be used to calculate frequency domain GC.
 
-Knowing d
-
-Ill-condition data here is the time series that some variables are highly correlated. The data after a low/high/band pass filter will be ill-conditioned in general. Resampling to the pass band can turn it to "good-condition" problem.
+Here "ill-condition" time series means that some variables in it (with possibly different time shifts) are almost linearly dependent(e.g. highly correlated). The data after a low/high/band pass filter will be ill-conditioned in general. Resampling to the pass band might turn it to "good-condition" problem in this case.
 
 ### Functions:
 
 See GCcal/readme_GCcal.txt for details (in Chinese). Here list some main functions:
 
+* Variable name convention and data structure
+
+  `len`: length of data (number of time points).  
+  `p  `: number of variables.  
+  `m  `: fitting order, also denoted as `od`.
+
+  `X`: p &times; len, *matrix*, multi-dimensional time series data.  
+  `R`: p &times; p\*(m+1), *matrix*, covariance function in 2d form. i.e. R = [R(0) R(1) ... R(m)]. R(k) = E[X(t)\*X(t)'].  
+  `A`: p &times; p\*m, *matrix*, Auto-Regression coefficients in 2d form. i.e. A = [A(1) A(2) ... A(m)]. In LSM eqn  
+>    X(t) + A(1)\*X(t-1) + ... + A(m)\*X(t-m) = E(t)  
+
+  `S`: p &times; p &times; fftlen, *array*, spectrum of X. Some code might use fftlen &times; p &times; p *array*, read the code for actual format.  
+  `covz`: p\*(m+1) &times; p\*(m+1), *matrix*, the big covariance matrix: covz = E[Z(t)\*Z(t)'], Z(t) = [X(t); ... ; X(t-m)].  
+  `GC`: p &times; p, *matrix*, the GC values, `GC(i,j)` means GC from `j` to `i`.
+
 * Calculate GC in time domain (under `GCcal/`).
+
+  - Usage suggestion:
+     + Use `nGrangerTfast.m` for general purpose GC calculation.
+     + Use `pos_nGrangerT_qrm.m` for ill-condition data.
+     + Use `RGrangerTLevinson.m` for handreds or more variables case.
 
   - `nGrangerT.m`
 
