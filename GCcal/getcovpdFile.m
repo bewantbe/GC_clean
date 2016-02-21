@@ -53,7 +53,7 @@ end
 
 fid = fopen(XF, 'r');
 if x_skip>0
-  fseek(fid, x_skip*p*8);
+  fseek(fid, x_skip*p*8, 'bof');
 end
 
 mem_lim = 2^28;            % memory limit in byte, 2^28 byte = 256 MB
