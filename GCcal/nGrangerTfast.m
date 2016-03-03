@@ -4,7 +4,7 @@
 % Time cost: O( len*m*p^2 ) + O( (p*m)^3 )
 % RAM  cost: O( len*p ) + O( 3.5*(p*m)^2 ) * 8 Byte
 
-function GC = nGrangerTfast(X, m, b_whiten_first)
+function [GC, D, A2d] = nGrangerTfast(X, m, b_whiten_first)
   p = size(X, 1);
   if exist('b_whiten_first', 'var') && b_whiten_first ~= 0
     % whiten data can help reduce condition number
@@ -29,5 +29,5 @@ function GC = nGrangerTfast(X, m, b_whiten_first)
     covz = getcovzpd(X, m);
   end
 
-  GC = RGrangerTfast(covz, p);
+  [GC, D, A2d] = RGrangerTfast(covz, p);
 end
