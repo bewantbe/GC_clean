@@ -26,11 +26,12 @@ if sum(tmp_v(id_x))>0 || length(id_x)+length(id_y)>=p
   error('repeated index!!');
 end
 
-%% solve in time domain
-idx0 = true(1,p);  idx0(id_y) = false;
-[~, De0_star, D] = pos_nGrangerT2(X(idx0,:), od);    % autoregression(without y)
-[~, De0,      B] = pos_nGrangerT2(X, od);            % jonit-regression
-
+% Solve in time domain
+covz = getcovzpd(X, od);
+id_no_y = true(p, 1);  id_no_y(id_y) = false;
+id_no_y = repmat(id_no_y, 1, od+1);
+[D, De0_star] = ARregressionpd(covz(id_no_y, id_no_y), p-length(id_y));
+[B, De0     ] = ARregressionpd(covz, p);
 wGc = singleGrangerFA(D, De0_star, B, De0, id_y, id_x, fftlen);
 
 end
