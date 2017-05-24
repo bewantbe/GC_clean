@@ -39,7 +39,7 @@ Here "ill-condition" time series means that some variables in it (possibly with 
   `X`: p &times; len, *matrix*, multi-dimensional time series data.  
   `R`: p &times; p\*(m+1), *matrix*, covariance function in 2d form. i.e. R = [R(0) R(1) ... R(m)]. R(k) = E[X(t)\*X(t)'].  
   `A`: p &times; p\*m, *matrix*, Auto-Regression coefficients in 2d form. i.e. A = [A(1) A(2) ... A(m)]. In LSM eqn  
->    X(t) + A(1)\*X(t-1) + ... + A(m)\*X(t-m) = E(t)  
+    > X(t) + A(1)\*X(t-1) + ... + A(m)\*X(t-m) = E(t)  
 
   `S`: p &times; p &times; fftlen, *array*, spectrum of X. Some code might use fftlen &times; p &times; p *array*, read the code for actual format.  
   `covz`: p\*(m+1) &times; p\*(m+1), *matrix*, the big covariance matrix: covz = E[Z(t)\*Z(t)'], Z(t) = [X(t); ... ; X(t-m)].  
