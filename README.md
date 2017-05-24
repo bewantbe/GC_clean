@@ -203,3 +203,4 @@ References<a name="references"></a>
 
 * Zhou D, Zhang Y, Xiao Y, Cai D (2014) Reliability of the Granger causality inference. New J. Phys. 16 043016. [doi:10.1088/1367-2630/16/4/043016](http://iopscience.iop.org/1367-2630/16/4/043016)
 
+* Zhang, Y., Xiao, Y., Zhou, D., & Cai, D. (2016). Granger causality analysis with nonuniform sampling and its application to pulse-coupled nonlinear dynamics. Physical Review E, 93(4), 042217. [doi:10.1103/PhysRevE.93.042217](https://journals.aps.org/pre/abstract/10.1103/PhysRevE.93.042217)
