@@ -3,22 +3,22 @@ GC_clean
 
 A collection of GNU Octave (also Matlab compatible) scripts and functions that calculate and investigate Granger Causality(GC). We developed these code for the study of neuroscience (See [*References*](#references)).
 
-The code in this package is capable to compute conditional GC of a thousand variables (Within an hour in usual PC). There are code to compute both time domain and frequency domain GC. Statistical test (p-value, confidence interval) can also be obtained (so far time domain only).
+The code in this package is capable to compute conditional GC of one thousand variables within an hour (10 min, if correlations are known) in a usual PC. There are code to compute both time domain and frequency domain GC. Statistical test (i.e. p-value, confidence interval) can also be obtained (so far time domain only).
 
-Note that these code are mainly for research purposes. While the correctness is one of our main concern, the robustness for all input cases is not guaranteed (see also *Function overview*).
+Note that these code are mainly for research purposes. While the correctness is of our main concern, the robustness for all input cases is not guaranteed, expecially when the input violate basic assumption of GC, see also *Function overview*.
 
 Function overview
 -----------------
 
 There are various ways to calculate GC, some are fast, some are more robust to ill-condition problem (but slow and maybe consume a lots memory).
 
-The calculation of GC usually can be divided into three steps (time domain):<a name="gc-step"></a>
+The calculation of GC usually can be divided into three steps (time domain calculation):<a name="gc-step"></a>
 
 1. Compute multivariate [autocorrelation](http://en.wikipedia.org/wiki/Autocorrelation) (also called [correlation function](http://en.wikipedia.org/wiki/Correlation_function)) of input time series.
 2. Use the autocorrelation to solve the [vector autoregression](http://en.wikipedia.org/wiki/Vector_autoregression) problem, and get residual variances.
 3. Use the residual variances obtained above to calculate GC.
 
-Or, in frequency domain it is:
+Or, perform the calculation in frequency domain:
 
 1. Estimate the [spectral density](http://en.wikipedia.org/wiki/Spectral_density_estimation) of input time series.
 2. Perform the (minimum phase) spectral factorization to get the transfer function and residual variances.
@@ -26,11 +26,9 @@ Or, in frequency domain it is:
 
 Both time domain and frequency domain method can be used to calculate frequency domain GC.
 
-Here "ill-condition" time series means that some variables in it (with possibly different time shifts) are almost linearly dependent(e.g. highly correlated). The data after a low/high/band pass filter will be ill-conditioned in general. Resampling to the pass band might turn it to "good-condition" problem in this case.
+Here "ill-condition" time series means that some variables in it (possibly with different time shifts) are nearly linearly dependent or correlation almost equals one. e.g. the data after a low/high/band pass filter will be ill-conditioned in general. Resampling the band passed signal to the pass band (so called "critically sampled") can turn it to "good-condition" problem.
 
 ### Functions:
-
-See GCcal/readme_GCcal.txt for details (in Chinese). Here list some main functions:
 
 * Variable name convention and data structure
 
@@ -56,70 +54,70 @@ See GCcal/readme_GCcal.txt for details (in Chinese). Here list some main functio
 
   - `nGrangerT.m`
 
-        Use Yule-Walker equation for the 2nd step. It's simple and fast (for fewer than hundred variables). Not stable for short data (e.g. <1e4) and ill-condition data.
+    > Use Yule-Walker equation for the 2nd step. It's simple and fast (for fewer than hundred variables). Not stable for short data (e.g. <1e4) and ill-condition data.
 
   - `pos_nGrangerT.m, pos_nGrangerT2.m, pos_nGrangerT_qr.m, pos_nGrangerT_qrm.m`
 
-        Solve the finite data point linear least square problem in the 2nd step. Essentially solving the normal equation `"X'*X*A =X'*Y"`. The robustness relies on the '/' operator in Octave (or Matlab) and accumulation round-off error in the 1st step.
+    > Solve the finite data point linear least square problem in the 2nd step. Essentially solving the normal equation `"X'*X*A =X'*Y"`. The robustness relies on the '/' operator in Octave (or Matlab) and accumulation round-off error in the 1st step.
 
-        `pos_nGrangerT.m` calculate as the definition. More stable than `nGrangerT.m`.
+    > `pos_nGrangerT.m` calculate as the definition. More stable than `nGrangerT.m`.
 
-        `pos_nGrangerT2.m` calculate as its definition, but use some trick to do it fast (as fast as `nGrangerT.m`) and use much less memory. Slightly more Round-off error than `pos_nGrangerT.m`.
+    > `pos_nGrangerT2.m` calculate as its definition, but use some trick to do it fast (as fast as `nGrangerT.m`) and use much less memory. Slightly more Round-off error than `pos_nGrangerT.m`.
 
-        `pos_nGrangerT_qr.m` solve the linear least square problem by [QR decomposition](http://en.wikipedia.org/wiki/QR_decomposition) in "X*A=Y" (performed by the operator "/"). Effectively square rooted the [condition number](http://en.wikipedia.org/wiki/Condition_number).
+    > `pos_nGrangerT_qr.m` solve the linear least square problem by [QR decomposition](http://en.wikipedia.org/wiki/QR_decomposition) in "X*A=Y" (performed by the operator "/"). Effectively square rooted the [condition number](http://en.wikipedia.org/wiki/Condition_number).
 
-        `pos_nGrangerT_qrm.m` A variation of `pos_nGrangerT_qr.m`, which also put mean value into least square problem (instead of simply subtract it). This is the most stable (most slow) and accurate method in this package.
+    > `pos_nGrangerT_qrm.m` A variation of `pos_nGrangerT_qr.m`, which also put mean value into least square problem (instead of simply subtract it). This is the most stable (most slow) and accurate method in this package.
 
   - `nGrangerTfast.m`
 
-        Almost as stable as `pos_nGrangerT2.m`, and mathematically equivalent to `pos_nGrangerT2.m`. It is fast (even faster than `nGrangerT.m`) for case of tens and hundreds of variables.
+    > Almost as stable as `pos_nGrangerT2.m`, and mathematically equivalent to `pos_nGrangerT2.m`. It is fast (even faster than `nGrangerT.m`) for case of tens and hundreds of variables.
 
   - `RGrangerTLevinson.m`
 
-        Same method as `nGrangerTfast.m`, but use [Levinson recursion](http://en.wikipedia.org/wiki/Levinson_recursion) to perform the matrix inversion. Much faster than even `nGrangerTfast.m` for the case of hundreds and a thousand variables. Use it as `GC = RGrangerTLevinson( getcovpd(X, m) );`. Stability is worse than `nGrangerT.m`, but still enough for non-ill-condition problem (e.g. cond<1e6).
+    > Same method as `nGrangerTfast.m`, but use [Levinson recursion](http://en.wikipedia.org/wiki/Levinson_recursion) to perform the matrix inversion. Much faster than even `nGrangerTfast.m` for the case of hundreds and a thousand variables. Use it as `GC = RGrangerTLevinson( getcovpd(X, m) );`. Stability is worse than `nGrangerT.m`, but still enough for non-ill-condition problem (e.g. cond<1e6).
         Note: to overcome the ill-condition problem, one may whiten the time series fist (see `WhiteningFilter.m`).
 
   - `pairGrangerT.m`
 
-        Calculate pairwise GC. Same stability as `nGrangerT.m`.
+    > Calculate pairwise GC. Same stability as `nGrangerT.m`.
 
 
 * Calculate frequency domain GC (under `GCcal/`).
 
   - `nGrangerF.m`
 
-        As not stable as `nGrangerT.m`. And very slow for large variables (not speed optimized, but should be easy to read and understand following [John Geweke (1984)](#references)).
+    > As not stable as `nGrangerT.m`. And very slow for large variables (not speed optimized, but should be easy to read and understand following [John Geweke (1984)](#references)).
 
 
 * Related functions
 
   - `GCcal/gc_prob_nonzero.m`
 
-        Get p-value ("probability" of nonzero) for the corresponding GC. Used for significance test.
+    > Get p-value ("probability" of nonzero) for the corresponding GC. Used for significance test.
 
   - `GCcal/gc_prob_intv.m`
 
-        Get confidence interval of GC value.
+    > Get confidence interval of GC value.
 
   - `GCcal/chooseOrderAuto.m, GCcal/chooseROrderFull.m`
 
-        Get suitable regression order for GC. Based on Akaike information criterion (AIC) or Bayesian information criterion (BIC).
+    > Get suitable regression order for GC. Based on Akaike information criterion (AIC) or Bayesian information criterion (BIC).
         
-        `chooseOrderAuto.m` is a fully automatic routine that use Levinson recursion for "good-condition" problem, and use method like `pos_nGrangerT2.m` for ill-condition problem.
+    > `chooseOrderAuto.m` is a fully automatic routine that use Levinson recursion for "good-condition" problem, and use method like `pos_nGrangerT2.m` for ill-condition problem.
         
-        `chooseROrderFull.m` can also return autoregression order.
+    > `chooseROrderFull.m` can also return autoregression order.
 
   - `GCcal_spectrum/mX2S_wnd.m`
   
-        Estimate spectral density with window function applied.
+    > Estimate spectral density with window function applied.
 
   - `GCcal_spectrum/mX2S_nuft.m`
 
-        Estimate spectral density for non-uniformly sampled data.
+    > Estimate spectral density for non-uniformly sampled data.
 
 * `IFsimu_release_2.1.1.zip, prj_neuron_gc/raster_tuning`
 
-    An Integrate-and-Fire model neuron simulator. See the readme in `IFsimu_release_2.1.1.zip/exec/Readme.txt` for details. The latest version can be found in https://bitbucket.org/bewantbe/ifsimu or an alternative simulator https://github.com/bewantbe/point-neuron-network-simulator (faster, but currently in experimental state).
+    > An Integrate-and-Fire model neuron simulator. See the readme in `IFsimu_release_2.1.1.zip/exec/Readme.txt` for details. The latest version can be found in https://bitbucket.org/bewantbe/ifsimu or an alternative simulator https://github.com/bewantbe/point-neuron-network-simulator (faster, but currently in experimental state).
 
 Speed<a name="speed"></a>
 -----
