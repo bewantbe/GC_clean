@@ -1,7 +1,7 @@
 GC_clean
 ========
 
-A collection of GNU Octave (also Matlab compatible) scripts and functions that calculate and investigate Granger Causality(GC). We developed these code for the study of neuroscience (See the last three [*References*](#references)).
+A collection of GNU Octave (also Matlab compatible) scripts and functions that calculate and investigate Granger Causality(GC). We developed these code for the study of neuroscience (See [*References*](#references)).
 
 The code in this package is capable to compute conditional GC of a thousand variables (Within an hour in usual PC). There are code to compute both time domain and frequency domain GC. Statistical test (p-value, confidence interval) can also be obtained (so far time domain only).
 
