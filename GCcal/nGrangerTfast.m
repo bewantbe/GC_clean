@@ -1,6 +1,10 @@
 % Multi-variate conditional Granger causality calculation in time domain.
 % Much faster than pos_nGrangerT2() for large (>50) variable case.
 % Almost as stable as pos_nGrangerT2(), and mathematically equivalent to it.
+%
+% Usage (see also nGrangerT()):
+%   [GC, D, A2d] = nGrangerTfast(X, m, b_whiten_first)
+%
 % Time cost: O( len*m*p^2 ) + O( (p*m)^3 )
 % RAM  cost: O( len*p ) + O( 3.5*(p*m)^2 ) * 8 Byte
 
