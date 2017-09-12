@@ -13,5 +13,5 @@ else
 end
 p = size(X,1);
 m3R = reshape(R,p,p,[]);
-cov_full = cat(3,flipdim(m3R(:,:,2:end),3),m3R);
-idt = 1-size(m3R) : size(m3R)-1;
+cov_full = cat(3,flipdim(permute(m3R(:,:,2:end), [2 1 3]),3),m3R);
+idt = 1-size(m3R,3) : size(m3R,3)-1;
