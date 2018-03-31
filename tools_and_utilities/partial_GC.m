@@ -8,7 +8,7 @@
 %  partial_GC(e1(2:end)+e2(1:end-1), e2(2:end), 2)
 % should give result close to log(2)
 
-function pGC = partial_GC(srdx, srdy, od)
+function [pGC, jrdx] = partial_GC(srdx, srdy, od)
 len = length(srdx);
 if (exist('od', 'var') == 0)
   od = 20;

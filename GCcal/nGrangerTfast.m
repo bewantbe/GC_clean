@@ -9,7 +9,17 @@
 % RAM  cost: O( len*p ) + O( 3.5*(p*m)^2 ) * 8 Byte
 
 function [GC, D, A2d] = nGrangerTfast(X, m, b_whiten_first)
-  p = size(X, 1);
+  [p, len] = size(X);
+  if p*p*m > p*(len-m)
+    if len < p
+      disp('Do you mis-transpose the data matrix?');
+    end
+    warning('Data length too short for GC.');
+    GC = zeros(p, p);
+    D = GC;
+    A2d = [];
+    return
+  end
   if exist('b_whiten_first', 'var') && b_whiten_first ~= 0
     % whiten data can help reduce condition number
     switch b_whiten_first
