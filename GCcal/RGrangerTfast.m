@@ -29,7 +29,7 @@ function [GC, D, A2d] = RGrangerTfast(R, p)
   GC = zeros(p, p);
   for j = 1 : p
     Qjj = Qz(id_0+j, id_0+j);
-    GC(:, j) = log1p(sum(Qjj \ a(:,:,j) .* a(:,:,j))' ./ d);
+    GC(:, j) = log1p(sum(Qjj \ a(:,:,j) .* a(:,:,j), 1)' ./ d);
     GC(j, j) = 0;
   end
 end

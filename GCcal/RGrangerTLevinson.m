@@ -14,7 +14,7 @@ function [GC, D, A] = RGrangerTLevinson(R)
 
   GC = zeros(p, p);
   for j = 1 : p
-    GC(:, j) = log1p(sum(s_Qjj(:,:,j) \ A(:,:,j) .* A(:,:,j))' ./ d);
+    GC(:, j) = log1p(sum(s_Qjj(:,:,j) \ A(:,:,j) .* A(:,:,j), 1)' ./ d);
     GC(j, j) = 0;
   end
 
