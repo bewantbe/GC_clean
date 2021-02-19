@@ -174,7 +174,7 @@ for ii = 1 : p
   for jj = 1 : p
     if ii == jj continue; end
     subplot(p, p, (ii-1)*p + jj);
-    plot(w, wGC(ii, jj, :), 'b',
+    plot(w, squeeze(wGC(ii, jj, :)), 'b', ...
          w, gc_zero_line*ones(size(w)), 'r');
   end
 end

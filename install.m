@@ -13,7 +13,7 @@ else
   flushstdout = @() 0;
 end
 
-url_download_eigen = 'https://bitbucket.org/eigen/eigen/get/3.1.4.zip';
+url_download_eigen = 'https://gitlab.com/libeigen/eigen/-/archive/3.1.4/eigen-3.1.4.zip';
 dir_lib_ext = [GC_CAL_HOME,filesep,'extern_lib',filesep];
 if ~exist([dir_lib_ext,'eigen3'], 'file')
   fprintf('Downloading Eigen...');  flushstdout();
@@ -21,7 +21,7 @@ if ~exist([dir_lib_ext,'eigen3'], 'file')
   fprintf('Unziping Eigen...');  flushstdout();
   unzip('eigen-3.1.4.zip','extern_lib');
   % rename it, since I use #include <eigen3/***> in the cpp source code
-  movefile([dir_lib_ext,'eigen-eigen-36bf2ceaf8f5'],[dir_lib_ext,'eigen3']);
+  movefile([dir_lib_ext,'eigen-3.1.4'],[dir_lib_ext,'eigen3']);
   fprintf('done.\n');  flushstdout();
 end
 
